@@ -1,0 +1,10 @@
+# Ignore everything
+/*
+
+# Not these directories
+!week4/
+week4/*
+!week4/tiltDraw/
+
+# Not these files
+!.gitignore
