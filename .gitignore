@@ -8,3 +8,4 @@ week4/*
 
 # Not these files
 !.gitignore
+!README.md
