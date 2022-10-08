@@ -6,6 +6,9 @@
 week4/*
 !week4/tiltDraw/
 
+!week5/
+week5/*.png
+
 # Not these files
 !.gitignore
 !README.md
