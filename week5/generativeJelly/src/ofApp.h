@@ -22,16 +22,24 @@ class ofApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
     
-//      My Functions
+    // My Functions
         ofPoint makeHeadVertex(float angle);
         void headSegmentsChanged(int & numSegments);
+        void headAChanged(float & num);
+        void headBChanged(float & num);
+        void headCChanged(int & num);
     
         ofxPanel gui;
     
         float width;
         float height;
         float radius;
+    
+    // Head related
         ofPolyline head;
         ofParameter<int> headSegments;
+        ofParameter<float> headA;
+        ofParameter<float> headB;
+        ofParameter<int> headC;
 		
 };

@@ -3,9 +3,15 @@
 //--------------------------------------------------------------
 void ofApp::setup(){
     headSegments.addListener(this, &ofApp::headSegmentsChanged);
+    headA.addListener(this, &ofApp::headAChanged);
+    headB.addListener(this, &ofApp::headBChanged);
+    headC.addListener(this, &ofApp::headCChanged);
     
     gui.setup();
     gui.add(headSegments.set( "headSegments", 32, 8, 128 ));
+    gui.add(headA.set("headA", 1.0, 0.0, 4.0));
+    gui.add(headB.set("headB", 0.075, 0.0, 0.3));
+    gui.add(headC.set("headC", 10, 0, 20));
     
     width = ofGetWidth();
     height = ofGetHeight();
@@ -41,17 +47,10 @@ void ofApp::draw(){
 //--------------------------------------------------------------
 ofPoint ofApp::makeHeadVertex(float angle) {
     ofPoint p = ofPoint();
-    float wobble = radius * (1 + 0.075 * cos(angle * 10));
+    float wobble = radius * (headA + headB * cos(angle * headC));
     p.x = wobble * cos(angle - PI/2);
     p.y = wobble * sin(angle - PI/2);
     return p;
-}
-
-//--------------------------------------------------------------
-void ofApp::headSegmentsChanged(int & numSegments) {
-    head.clear();
-    cout << numSegments << endl;
-    
 }
 
 //--------------------------------------------------------------
@@ -108,3 +107,25 @@ void ofApp::gotMessage(ofMessage msg){
 void ofApp::dragEvent(ofDragInfo dragInfo){ 
 
 }
+
+//--------------------------------------------------------------
+void ofApp::headSegmentsChanged(int & numSegments) {
+    head.clear();
+    cout << numSegments << endl;
+}
+
+//--------------------------------------------------------------
+void ofApp::headAChanged(float & num) {
+    head.clear();
+}
+
+//--------------------------------------------------------------
+void ofApp::headBChanged(float & num) {
+    head.clear();
+}
+
+//--------------------------------------------------------------
+void ofApp::headCChanged(int & num) {
+    head.clear();
+}
+

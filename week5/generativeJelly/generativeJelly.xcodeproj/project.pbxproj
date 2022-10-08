@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		3E018EE052C86B48FBCA3F5C /* ofxButton.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 1A7F60E48767A70F598CF1DB /* ofxButton.cpp */; };
 		49803452B0C005D925C51C3F /* ofxGuiGroup.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 80B611B67B70408F9A207615 /* ofxGuiGroup.cpp */; };
+		630E9230C8D3B8F09B7D2B6C /* ofxFatLine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5881C147454AA25C31F357E1 /* ofxFatLine.cpp */; };
 		71BB89DBE2096EE6D2E8080F /* ofxPanel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 550770BE80BA04ABDBBBEC5D /* ofxPanel.cpp */; };
 		B1B433FB962C4B55943EB5C0 /* ofxSlider.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F04085A84A7637CFDE1C8F7C /* ofxSlider.cpp */; };
 		BA037300EFC2E0968196E86B /* ofxBaseGui.cpp in Sources */ = {isa = PBXBuildFile; fileRef = AF946F9F9479FD412E746596 /* ofxBaseGui.cpp */; };
@@ -45,6 +46,7 @@
 		4BDCC2C261490825E8160484 /* ofxButton.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = ofxButton.h; path = ../../of_v0.11.2_osx_release/addons/ofxGui/src/ofxButton.h; sourceTree = SOURCE_ROOT; };
 		5470AEFB121789CD83134FCE /* ofxBaseGui.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = ofxBaseGui.h; path = ../../of_v0.11.2_osx_release/addons/ofxGui/src/ofxBaseGui.h; sourceTree = SOURCE_ROOT; };
 		550770BE80BA04ABDBBBEC5D /* ofxPanel.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = ofxPanel.cpp; path = ../../of_v0.11.2_osx_release/addons/ofxGui/src/ofxPanel.cpp; sourceTree = SOURCE_ROOT; };
+		5881C147454AA25C31F357E1 /* ofxFatLine.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = ofxFatLine.cpp; path = ../../of_v0.11.2_osx_release/addons/ofxFatLines/src/ofxFatLine.cpp; sourceTree = SOURCE_ROOT; };
 		6FD18784B990612B8CF3F739 /* ofxColorPicker.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = ofxColorPicker.cpp; path = ../../of_v0.11.2_osx_release/addons/ofxGui/src/ofxColorPicker.cpp; sourceTree = SOURCE_ROOT; };
 		781691D621AC5155856B98DC /* ofxToggle.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = ofxToggle.h; path = ../../of_v0.11.2_osx_release/addons/ofxGui/src/ofxToggle.h; sourceTree = SOURCE_ROOT; };
 		7F03568C96D5EECF29B0B3B6 /* ofxGuiUtils.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = ofxGuiUtils.h; path = ../../of_v0.11.2_osx_release/addons/ofxGui/src/ofxGuiUtils.h; sourceTree = SOURCE_ROOT; };
@@ -235,6 +237,7 @@
 		E4B69E1F0A3A1BDC003C02F2 /* ofApp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ofApp.h; path = src/ofApp.h; sourceTree = SOURCE_ROOT; };
 		E4B6FCAD0C3E899E008CF71C /* openFrameworks-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "openFrameworks-Info.plist"; sourceTree = "<group>"; };
 		E4EB6923138AFD0F00A09F29 /* Project.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Project.xcconfig; sourceTree = "<group>"; };
+		EDAB1216D05537642115F0C9 /* ofxFatLine.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = ofxFatLine.h; path = ../../of_v0.11.2_osx_release/addons/ofxFatLines/src/ofxFatLine.h; sourceTree = SOURCE_ROOT; };
 		F04085A84A7637CFDE1C8F7C /* ofxSlider.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = ofxSlider.cpp; path = ../../of_v0.11.2_osx_release/addons/ofxGui/src/ofxSlider.cpp; sourceTree = SOURCE_ROOT; };
 		F2994571F24A174768C46DB3 /* ofxToggle.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = ofxToggle.cpp; path = ../../of_v0.11.2_osx_release/addons/ofxGui/src/ofxToggle.cpp; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
@@ -263,6 +266,23 @@
 			children = (
 			);
 			name = local_addons;
+			sourceTree = "<group>";
+		};
+		7AB2A2D0D03885EE1A41A760 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				5881C147454AA25C31F357E1 /* ofxFatLine.cpp */,
+				EDAB1216D05537642115F0C9 /* ofxFatLine.h */,
+			);
+			name = src;
+			sourceTree = "<group>";
+		};
+		8A3DD780D89619FC9FE77FBA /* ofxFatLines */ = {
+			isa = PBXGroup;
+			children = (
+				7AB2A2D0D03885EE1A41A760 /* src */,
+			);
+			name = ofxFatLines;
 			sourceTree = "<group>";
 		};
 		A763ED608B35AE3310251DEE /* src */ = {
@@ -297,6 +317,7 @@
 		BB4B014C10F69532006C3DED /* addons */ = {
 			isa = PBXGroup;
 			children = (
+				8A3DD780D89619FC9FE77FBA /* ofxFatLines */,
 				480A780D8D0308AE4A368801 /* ofxGui */,
 			);
 			name = addons;
@@ -707,6 +728,7 @@
 			files = (
 				E4B69E200A3A1BDC003C02F2 /* main.cpp in Sources */,
 				E4B69E210A3A1BDC003C02F2 /* ofApp.cpp in Sources */,
+				630E9230C8D3B8F09B7D2B6C /* ofxFatLine.cpp in Sources */,
 				BA037300EFC2E0968196E86B /* ofxBaseGui.cpp in Sources */,
 				3E018EE052C86B48FBCA3F5C /* ofxButton.cpp in Sources */,
 				CDCD1B12AD45DF8A68B312C5 /* ofxColorPicker.cpp in Sources */,
@@ -773,6 +795,7 @@
 					"$(OF_CORE_HEADERS)",
 					src,
 					src,
+					../../of_v0.11.2_osx_release/addons/ofxFatLines/src,
 					../../of_v0.11.2_osx_release/addons/ofxGui/src,
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
@@ -798,6 +821,7 @@
 					"$(OF_CORE_HEADERS)",
 					src,
 					src,
+					../../of_v0.11.2_osx_release/addons/ofxFatLines/src,
 					../../of_v0.11.2_osx_release/addons/ofxGui/src,
 				);
 				ICON = "$(ICON_NAME_RELEASE)";
@@ -866,6 +890,7 @@
 					"$(OF_CORE_HEADERS)",
 					src,
 					src,
+					../../of_v0.11.2_osx_release/addons/ofxFatLines/src,
 					../../of_v0.11.2_osx_release/addons/ofxGui/src,
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
@@ -925,6 +950,7 @@
 					"$(OF_CORE_HEADERS)",
 					src,
 					src,
+					../../of_v0.11.2_osx_release/addons/ofxFatLines/src,
 					../../of_v0.11.2_osx_release/addons/ofxGui/src,
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
@@ -950,6 +976,7 @@
 					"$(OF_CORE_HEADERS)",
 					src,
 					src,
+					../../of_v0.11.2_osx_release/addons/ofxFatLines/src,
 					../../of_v0.11.2_osx_release/addons/ofxGui/src,
 				);
 				ICON = "$(ICON_NAME_DEBUG)";
@@ -983,6 +1010,7 @@
 					"$(OF_CORE_HEADERS)",
 					src,
 					src,
+					../../of_v0.11.2_osx_release/addons/ofxFatLines/src,
 					../../of_v0.11.2_osx_release/addons/ofxGui/src,
 				);
 				ICON = "$(ICON_NAME_RELEASE)";
