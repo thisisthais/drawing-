@@ -32,23 +32,22 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-
     ofPushView();
-    ofTranslate(width/2, height/2);
+    cam.begin();
+    ofTranslate(-width/4, 0);
     ofSetColor(ofColor::white);
-//    head.draw();
+    head.draw();
+    ofNoFill();
+      for (int i = 0; i < tentaclePlacements.size(); i++){
+        int x = tentaclePlacements[i].x;
+        int y = tentaclePlacements[i].y;
+        ofDrawCircle(x, y, 5);
+      }
+    ofTranslate(width/2, 0);
     body.draw();
     ofSetColor(ofColor::red);
-
-//    ofNoFill();
-//      for (int i = 0; i < tentaclePlacements.size(); i++){
-//        int x = tentaclePlacements[i].x;
-//        int y = tentaclePlacements[i].y;
-//        ofDrawCircle(x, y, 5);
-//      }
-    
+    cam.end();
     ofPopView();
-
     gui.draw();
 }
 
@@ -63,6 +62,7 @@ void ofApp::makeHead() {
     for(float tentaclePos = 0; tentaclePos < TWO_PI; tentaclePos += TWO_PI/numTentacles) {
         tentaclePlacements.push_back(makeHeadVertex(tentaclePos));
     }
+    head.close();
 }
 
 void ofApp::makeBody() {
@@ -77,20 +77,20 @@ void ofApp::makeBody() {
         //this section draws the most circular top part of the jelly
         if (abs(theta) < wrapAngle) {
             p.x = bodyA*radius * cos(theta - PI/2);
-            p.y = bodyB*1.1*radius * sin(theta - PI/2);
+            p.y = -bodyB*1.1*radius * sin(theta - PI/2);
             body.addVertex(p);
         } else {
             // this section draws the tips of the jelly, left and right
             if ((abs(theta) <= wrapAngle + smoothRange + 0.01)) {
                 float t = ofMap(abs(theta), wrapAngle, wrapAngle + smoothRange, 0, PI);
                 p.x = truncf(bodyA*radius * cos(theta - PI/2));
-                p.y = truncf(bodyB*radius * sin(wrapAngle - PI/2) + 20 * sin(t));
+                p.y = -truncf(bodyB*radius * sin(wrapAngle - PI/2) + 20 * sin(t));
                 body.addVertex(p);
             // this section draws the curvy bottom/inner part of the jelly
             } else if (theta > 0) {
                 float t = ofMap(abs(theta), wrapAngle + smoothRange, PI, -PI, 0);
                 p.x = truncf(0.75 *radius * cos(t - PI))*bodyA*1.05;
-                p.y = truncf(-0.75 * bodyB*radius * bodyB*sin(t - PI) + radius * 0.5);
+                p.y = -truncf(-0.75 * bodyB*radius * bodyB*sin(t - PI) + radius * 0.5);
                 body.addVertex(p);
             }
         }

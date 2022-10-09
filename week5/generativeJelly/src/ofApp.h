@@ -35,6 +35,7 @@ class ofApp : public ofBaseApp{
         void bodyBChanged(float & num);
     
         ofxPanel gui;
+        ofEasyCam cam;
     
         float width;
         float height;
