@@ -24,7 +24,9 @@ class ofApp : public ofBaseApp{
     
     // My Functions
         void makeHead();
+        void makeBody();
         ofPoint makeHeadVertex(float angle);
+        ofPoint makeBodyVertex(float angle);
         void headSegmentsChanged(int & numSegments);
         void headAChanged(float & num);
         void headBChanged(float & num);
@@ -46,6 +48,5 @@ class ofApp : public ofBaseApp{
     
     // Body related
         ofPolyline body;
-        ofPolyline line;
 		
 };

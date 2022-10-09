@@ -18,20 +18,12 @@ void ofApp::setup(){
     radius = 0.25*height;
     
     makeHead();
+    makeBody();
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
     
-    ofPolyline bodyLeft;
-    ofPolyline bodyRight;
-    ofPoint tempPoint;
-//    for (float theta = 0; theta < PI; theta += steps) {
-//        tempPoint = makeHeadVertex(theta);
-//        bodyLeft.addVertex(tempPoint);
-//        tempPoint.x = -tempPoint.x;
-//        bodyRight.addVertex(tempPoint);
-//    }
 }
 
 //--------------------------------------------------------------
@@ -40,16 +32,17 @@ void ofApp::draw(){
     ofPushView();
     ofTranslate(width/2, height/2);
     ofSetColor(ofColor::white);
-    head.draw();
+//    head.draw();
+    body.draw();
     ofSetColor(ofColor::red);
 
-    ofNoFill();
-      int n = 30;
-      for (int i = 0; i < tentaclePlacements.size(); i++){
-        int x = tentaclePlacements[i].x;
-        int y = tentaclePlacements[i].y;
-        ofDrawCircle(x, y, 5);
-      }
+//    ofNoFill();
+//      for (int i = 0; i < tentaclePlacements.size(); i++){
+//        int x = tentaclePlacements[i].x;
+//        int y = tentaclePlacements[i].y;
+//        ofDrawCircle(x, y, 5);
+//      }
+    
     ofPopView();
 
     gui.draw();
@@ -68,12 +61,55 @@ void ofApp::makeHead() {
     }
 }
 
+void ofApp::makeBody() {
+    body.clear();
+    float steps = PI / headSegments;
+    // at what angle we should start swopping line back up
+    float wrapAngle = PI/2 + steps * 3;
+    float smoothRange = steps * 4;
+    ofPoint p;
+
+    for (float theta = 0; theta < PI; theta += steps) {
+        if (abs(theta) < wrapAngle) {
+            p.x = radius * cos(theta - PI/2);
+            p.y = radius * sin(theta - PI/2);
+        } else {
+//            p.x = radius * cos(theta - PI/2);
+//            p.y = -radius * sin(theta - PI/2) + radius * 0.5;
+            
+            //we add + 0.01 to avoid problems with comparing floats
+            if (theta <= wrapAngle + smoothRange + 0.01) {
+                float t = ofMap(theta, wrapAngle, wrapAngle + smoothRange, 0, PI/2);
+                p.x = radius * cos(theta - PI/2);
+                p.y = radius * sin(wrapAngle - PI/2) + 20 * sin(t);
+            } else {
+                float t = ofMap(theta, wrapAngle + smoothRange, PI, PI/2, 0);
+                p.x = 0.75 * radius * cos(t - PI/2);
+                p.y = 0.75 * radius * sin(t - PI/2) + radius * 0.5;
+            }
+        }
+//        body = body.getSmoothed(2);
+        body.addVertex(p);
+//        tempPoint.x = -tempPoint.x;
+//        body.addVertex(tempPoint);
+    }
+//    body = bodyRight;
+}
+
 //--------------------------------------------------------------
 ofPoint ofApp::makeHeadVertex(float angle) {
     ofPoint p = ofPoint();
     float wobble = radius * (headA + headB * cos(angle * headC));
     p.x = wobble * cos(angle - PI/2);
     p.y = wobble * sin(angle - PI/2);
+    return p;
+}
+
+//--------------------------------------------------------------
+ofPoint ofApp::makeBodyVertex(float angle) {
+    ofPoint p = ofPoint();
+    p.x = radius * cos(angle - PI/2);
+    p.y = radius * sin(angle - PI/2);
     return p;
 }
 
