@@ -69,31 +69,30 @@ void ofApp::makeBody() {
     float smoothRange = steps * 4;
     ofPoint p;
 
-    for (float theta = 0; theta < PI; theta += steps) {
+    for (float theta = -PI + steps; theta < PI; theta += steps) {
+        
+        //this section draws the most circular top part of the jelly
         if (abs(theta) < wrapAngle) {
             p.x = radius * cos(theta - PI/2);
             p.y = radius * sin(theta - PI/2);
+            body.addVertex(p);
         } else {
-//            p.x = radius * cos(theta - PI/2);
-//            p.y = -radius * sin(theta - PI/2) + radius * 0.5;
-            
-            //we add + 0.01 to avoid problems with comparing floats
-            if (theta <= wrapAngle + smoothRange + 0.01) {
-                float t = ofMap(theta, wrapAngle, wrapAngle + smoothRange, 0, PI/2);
-                p.x = radius * cos(theta - PI/2);
-                p.y = radius * sin(wrapAngle - PI/2) + 20 * sin(t);
-            } else {
-                float t = ofMap(theta, wrapAngle + smoothRange, PI, PI/2, 0);
-                p.x = 0.75 * radius * cos(t - PI/2);
-                p.y = 0.75 * radius * sin(t - PI/2) + radius * 0.5;
+            // this section draws the tips of the jelly, left and right
+            if ((abs(theta) <= wrapAngle + smoothRange + 0.01)) {
+                float t = ofMap(abs(theta), wrapAngle, wrapAngle + smoothRange, 0, PI);
+                p.x = truncf(radius * cos(theta - PI/2));
+                p.y = truncf(radius * sin(wrapAngle - PI/2) + 20 * sin(t));
+                body.addVertex(p);
+            // this section draws the curvy bottom/inner part of the jelly
+            } else if (theta > 0) {
+                float t = ofMap(abs(theta), wrapAngle + smoothRange, PI, -PI, 0);
+                p.x = truncf(0.75 * radius * cos(t - PI));
+                p.y = truncf(-0.75 * radius * sin(t - PI) + radius * 0.5);
+                body.addVertex(p);
             }
         }
-//        body = body.getSmoothed(2);
-        body.addVertex(p);
-//        tempPoint.x = -tempPoint.x;
-//        body.addVertex(tempPoint);
+        body.close();
     }
-//    body = bodyRight;
 }
 
 //--------------------------------------------------------------
@@ -135,7 +134,8 @@ void ofApp::mouseDragged(int x, int y, int button){
 
 //--------------------------------------------------------------
 void ofApp::mousePressed(int x, int y, int button){
-
+    cout << x - width/2 << endl;
+    cout << y - height/2 << endl;
 }
 
 //--------------------------------------------------------------
