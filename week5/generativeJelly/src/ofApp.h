@@ -23,6 +23,7 @@ class ofApp : public ofBaseApp{
 		void gotMessage(ofMessage msg);
     
     // My Functions
+        void makeHead();
         ofPoint makeHeadVertex(float angle);
         void headSegmentsChanged(int & numSegments);
         void headAChanged(float & num);
@@ -37,9 +38,14 @@ class ofApp : public ofBaseApp{
     
     // Head related
         ofPolyline head;
+        vector<ofPoint> tentaclePlacements;
         ofParameter<int> headSegments;
         ofParameter<float> headA;
         ofParameter<float> headB;
         ofParameter<int> headC;
+    
+    // Body related
+        ofPolyline body;
+        ofPolyline line;
 		
 };
