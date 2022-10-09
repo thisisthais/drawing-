@@ -31,6 +31,8 @@ class ofApp : public ofBaseApp{
         void headAChanged(float & num);
         void headBChanged(float & num);
         void headCChanged(int & num);
+        void bodyAChanged(float & num);
+        void bodyBChanged(float & num);
     
         ofxPanel gui;
     
@@ -48,5 +50,7 @@ class ofApp : public ofBaseApp{
     
     // Body related
         ofPolyline body;
+        ofParameter<float> bodyA;
+        ofParameter<float> bodyB;
 		
 };

@@ -6,12 +6,16 @@ void ofApp::setup(){
     headA.addListener(this, &ofApp::headAChanged);
     headB.addListener(this, &ofApp::headBChanged);
     headC.addListener(this, &ofApp::headCChanged);
+    bodyA.addListener(this, &ofApp::bodyAChanged);
+    bodyB.addListener(this, &ofApp::bodyBChanged);
     
     gui.setup();
     gui.add(headSegments.set( "headSegments", 32, 8, 128 ));
     gui.add(headA.set("headA", 1.0, 0.0, 4.0));
     gui.add(headB.set("headB", 0.075, 0.0, 0.3));
     gui.add(headC.set("headC", 10, 0, 20));
+    gui.add(bodyA.set("bodyA", 1.0, 0.25, 2.0));
+    gui.add(bodyB.set("bodyB", 1.0, 1.0, 1.6));
     
     width = ofGetWidth();
     height = ofGetHeight();
@@ -63,31 +67,30 @@ void ofApp::makeHead() {
 
 void ofApp::makeBody() {
     body.clear();
-    float steps = PI / headSegments;
+    float steps = PI / 32;
     // at what angle we should start swopping line back up
     float wrapAngle = PI/2 + steps * 3;
     float smoothRange = steps * 4;
     ofPoint p;
 
     for (float theta = -PI + steps; theta < PI; theta += steps) {
-        
         //this section draws the most circular top part of the jelly
         if (abs(theta) < wrapAngle) {
-            p.x = radius * cos(theta - PI/2);
-            p.y = radius * sin(theta - PI/2);
+            p.x = bodyA*radius * cos(theta - PI/2);
+            p.y = bodyB*1.1*radius * sin(theta - PI/2);
             body.addVertex(p);
         } else {
             // this section draws the tips of the jelly, left and right
             if ((abs(theta) <= wrapAngle + smoothRange + 0.01)) {
                 float t = ofMap(abs(theta), wrapAngle, wrapAngle + smoothRange, 0, PI);
-                p.x = truncf(radius * cos(theta - PI/2));
-                p.y = truncf(radius * sin(wrapAngle - PI/2) + 20 * sin(t));
+                p.x = truncf(bodyA*radius * cos(theta - PI/2));
+                p.y = truncf(bodyB*radius * sin(wrapAngle - PI/2) + 20 * sin(t));
                 body.addVertex(p);
             // this section draws the curvy bottom/inner part of the jelly
             } else if (theta > 0) {
                 float t = ofMap(abs(theta), wrapAngle + smoothRange, PI, -PI, 0);
-                p.x = truncf(0.75 * radius * cos(t - PI));
-                p.y = truncf(-0.75 * radius * sin(t - PI) + radius * 0.5);
+                p.x = truncf(0.75 *radius * cos(t - PI))*bodyA*1.05;
+                p.y = truncf(-0.75 * bodyB*radius * bodyB*sin(t - PI) + radius * 0.5);
                 body.addVertex(p);
             }
         }
@@ -171,8 +174,10 @@ void ofApp::dragEvent(ofDragInfo dragInfo){
 //--------------------------------------------------------------
 void ofApp::headSegmentsChanged(int & numSegments) {
     head.clear();
+    body.clear();
     tentaclePlacements.clear();
     makeHead();
+    makeBody();
 }
 
 //--------------------------------------------------------------
@@ -195,4 +200,17 @@ void ofApp::headCChanged(int & num) {
     tentaclePlacements.clear();
     makeHead();
 }
+
+//--------------------------------------------------------------
+void ofApp::bodyAChanged(float & num) {
+    body.clear();
+    makeBody();
+}
+
+//--------------------------------------------------------------
+void ofApp::bodyBChanged(float & num) {
+    body.clear();
+    makeBody();
+}
+
 
