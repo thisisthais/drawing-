@@ -35,6 +35,7 @@ class ofApp : public ofBaseApp{
         void bodyBChanged(float & num);
         void rotateBody();
         void manyHeads();
+        void reset();
     
         ofxPanel gui;
         ofEasyCam cam;
@@ -57,5 +58,7 @@ class ofApp : public ofBaseApp{
         vector<ofPolyline> bodies;
         ofParameter<float> bodyA;
         ofParameter<float> bodyB;
+    
+        ofMesh mesh;
 		
 };

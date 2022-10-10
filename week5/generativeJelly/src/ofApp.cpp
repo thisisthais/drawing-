@@ -44,8 +44,8 @@ void ofApp::draw(){
     ofSetColor(ofColor::red);
       for (int i = 0; i < tentaclePlacements.size(); i++){
         int x = tentaclePlacements[i].x;
-        int y = tentaclePlacements[i].y;
-        ofDrawCircle(x, y, 5);
+        int z = tentaclePlacements[i].y;
+        ofDrawCircle(glm::vec3(x,0,z), 5);
       }
     ofTranslate(width/2, 0);
     ofSetColor(ofColor::white);
@@ -61,6 +61,7 @@ void ofApp::draw(){
 //--------------------------------------------------------------
 void ofApp::makeHead() {
     head.clear();
+    heads.clear();
     float steps = PI / headSegments;
     for (float angle = 0; angle < TWO_PI; angle += steps) {
         head.addVertex(makeHeadVertex(angle));
@@ -116,17 +117,24 @@ void ofApp::makeBody() {
 }
 
 void ofApp::rotateBody() {
-    for (float bodyAngle = 0; bodyAngle < 180; bodyAngle += 15) {
+    float step;
+    if (headC == 0.0) {
+        step = 18;
+    } else {
+        step = 180/ headC;
+    }
+//    cout << headC << endl;
+    for (float bodyAngle = 0; bodyAngle < 180; bodyAngle += step) {
+        body.end();
         bodies.push_back(body.getVertices());
         body.rotateDeg(bodyAngle, glm::vec3(0, 1, 0));
     }
 }
 
 void ofApp::manyHeads() {
-    for (float height = 0; height < radius/2; height+= PI/8) {
+    for (float height = 0; height < PI; height+= PI/8) {
         heads.push_back(head.getVertices());
         head.translate(glm::vec3(0, 0, -20));
-        cout << cos(height/4) << endl;
         head.scale(cos(height/4), cos(height/4));
     }
 }
@@ -204,46 +212,42 @@ void ofApp::dragEvent(ofDragInfo dragInfo){
 
 }
 
-//--------------------------------------------------------------
-void ofApp::headSegmentsChanged(int & numSegments) {
+void ofApp::reset() {
     head.clear();
     body.clear();
     tentaclePlacements.clear();
     makeHead();
     makeBody();
+}
+
+//--------------------------------------------------------------
+void ofApp::headSegmentsChanged(int & numSegments) {
+    reset();
 }
 
 //--------------------------------------------------------------
 void ofApp::headAChanged(float & num) {
-    head.clear();
-    tentaclePlacements.clear();
-    makeHead();
+    reset();
 }
 
 //--------------------------------------------------------------
 void ofApp::headBChanged(float & num) {
-    head.clear();
-    tentaclePlacements.clear();
-    makeHead();
+    reset();
 }
 
 //--------------------------------------------------------------
 void ofApp::headCChanged(int & num) {
-    head.clear();
-    tentaclePlacements.clear();
-    makeHead();
+    reset();
 }
 
 //--------------------------------------------------------------
 void ofApp::bodyAChanged(float & num) {
-    body.clear();
-    makeBody();
+    reset();
 }
 
 //--------------------------------------------------------------
 void ofApp::bodyBChanged(float & num) {
-    body.clear();
-    makeBody();
+    reset();
 }
 
 
