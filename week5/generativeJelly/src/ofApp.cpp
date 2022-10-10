@@ -36,16 +36,23 @@ void ofApp::draw(){
     cam.begin();
     ofTranslate(-width/4, 0);
     ofSetColor(ofColor::white);
-    head.draw();
+//    head.draw();
+    for (int i = 0; i < heads.size(); i++) {
+        heads[i].draw();
+    }
     ofNoFill();
+    ofSetColor(ofColor::red);
       for (int i = 0; i < tentaclePlacements.size(); i++){
         int x = tentaclePlacements[i].x;
         int y = tentaclePlacements[i].y;
         ofDrawCircle(x, y, 5);
       }
     ofTranslate(width/2, 0);
-    body.draw();
-    ofSetColor(ofColor::red);
+    ofSetColor(ofColor::white);
+//    body.draw();
+    for (int i = 0; i < bodies.size(); i++) {
+        bodies[i].draw();
+    }
     cam.end();
     ofPopView();
     gui.draw();
@@ -58,15 +65,24 @@ void ofApp::makeHead() {
     for (float angle = 0; angle < TWO_PI; angle += steps) {
         head.addVertex(makeHeadVertex(angle));
     }
-    int numTentacles = 8;
-    for(float tentaclePos = 0; tentaclePos < TWO_PI; tentaclePos += TWO_PI/numTentacles) {
-        tentaclePlacements.push_back(makeHeadVertex(tentaclePos));
-    }
     head.close();
+    manyHeads();
+    for (int i = 0; i < heads.size(); i++) {
+        heads[i].rotateDeg(90, glm::vec3(1,0,0));
+    }
+    head.rotateDeg(90, glm::vec3(1,0,0));
+    int numTentacles = 8;
+    ofPoint temp;
+    for(float tentaclePos = 0; tentaclePos < TWO_PI; tentaclePos += TWO_PI/numTentacles) {
+        temp = makeHeadVertex(tentaclePos);
+        tentaclePlacements.push_back(temp);
+    }
+    
 }
 
 void ofApp::makeBody() {
     body.clear();
+    bodies.clear();
     float steps = PI / 32;
     // at what angle we should start swopping line back up
     float wrapAngle = PI/2 + steps * 3;
@@ -94,7 +110,24 @@ void ofApp::makeBody() {
                 body.addVertex(p);
             }
         }
-        body.close();
+    }
+    body.close();
+    rotateBody();
+}
+
+void ofApp::rotateBody() {
+    for (float bodyAngle = 0; bodyAngle < 180; bodyAngle += 15) {
+        bodies.push_back(body.getVertices());
+        body.rotateDeg(bodyAngle, glm::vec3(0, 1, 0));
+    }
+}
+
+void ofApp::manyHeads() {
+    for (float height = 0; height < radius/2; height+= PI/8) {
+        heads.push_back(head.getVertices());
+        head.translate(glm::vec3(0, 0, -20));
+        cout << cos(height/4) << endl;
+        head.scale(cos(height/4), cos(height/4));
     }
 }
 
@@ -137,8 +170,8 @@ void ofApp::mouseDragged(int x, int y, int button){
 
 //--------------------------------------------------------------
 void ofApp::mousePressed(int x, int y, int button){
-    cout << x - width/2 << endl;
-    cout << y - height/2 << endl;
+//    cout << x - width/2 << endl;
+//    cout << y - height/2 << endl;
 }
 
 //--------------------------------------------------------------

@@ -33,6 +33,8 @@ class ofApp : public ofBaseApp{
         void headCChanged(int & num);
         void bodyAChanged(float & num);
         void bodyBChanged(float & num);
+        void rotateBody();
+        void manyHeads();
     
         ofxPanel gui;
         ofEasyCam cam;
@@ -43,6 +45,7 @@ class ofApp : public ofBaseApp{
     
     // Head related
         ofPolyline head;
+        vector<ofPolyline> heads;
         vector<ofPoint> tentaclePlacements;
         ofParameter<int> headSegments;
         ofParameter<float> headA;
@@ -51,6 +54,7 @@ class ofApp : public ofBaseApp{
     
     // Body related
         ofPolyline body;
+        vector<ofPolyline> bodies;
         ofParameter<float> bodyA;
         ofParameter<float> bodyB;
 		
