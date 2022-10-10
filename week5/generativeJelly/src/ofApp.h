@@ -35,6 +35,7 @@ class ofApp : public ofBaseApp{
         void bodyBChanged(float & num);
         void rotateBody();
         void manyHeads();
+        void makeMesh();
         void reset();
     
         ofxPanel gui;

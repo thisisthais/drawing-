@@ -3,7 +3,7 @@
 //--------------------------------------------------------------
 void ofApp::setup(){
     headSegments.addListener(this, &ofApp::headSegmentsChanged);
-    headA.addListener(this, &ofApp::headAChanged);
+//    headA.addListener(this, &ofApp::headAChanged);
     headB.addListener(this, &ofApp::headBChanged);
     headC.addListener(this, &ofApp::headCChanged);
     bodyA.addListener(this, &ofApp::bodyAChanged);
@@ -11,7 +11,7 @@ void ofApp::setup(){
     
     gui.setup();
     gui.add(headSegments.set( "headSegments", 32, 8, 128 ));
-    gui.add(headA.set("headA", 1.0, 0.0, 4.0));
+//    gui.add(headA.set("headA", 1.0, 0.25, 2.0));
     gui.add(headB.set("headB", 0.075, 0.0, 0.3));
     gui.add(headC.set("headC", 10, 0, 20));
     gui.add(bodyA.set("bodyA", 1.0, 0.25, 2.0));
@@ -20,9 +20,11 @@ void ofApp::setup(){
     width = ofGetWidth();
     height = ofGetHeight();
     radius = 0.25*height;
+    mesh.setMode(OF_PRIMITIVE_POINTS);
     
     makeHead();
     makeBody();
+    makeMesh();
 }
 
 //--------------------------------------------------------------
@@ -49,6 +51,8 @@ void ofApp::draw(){
       }
     ofTranslate(width/2, 0);
     ofSetColor(ofColor::white);
+    mesh.draw();
+    ofTranslate(-width/2,0);
 //    body.draw();
     for (int i = 0; i < bodies.size(); i++) {
         bodies[i].draw();
@@ -56,6 +60,17 @@ void ofApp::draw(){
     cam.end();
     ofPopView();
     gui.draw();
+}
+
+//--------------------------------------------------------------
+void ofApp::makeMesh() {
+    for (int i = 0; i < bodies.size(); i++) {
+//        ofLog() << ofToString(bodies[i].getVertices());
+        mesh.addVertices(bodies[i].getVertices());
+    }
+    for (int i = 0; i < heads.size(); i++) {
+        mesh.addVertices(heads[i].getVertices());
+    }
 }
 
 //--------------------------------------------------------------
@@ -132,7 +147,7 @@ void ofApp::rotateBody() {
 }
 
 void ofApp::manyHeads() {
-    for (float height = 0; height < PI; height+= PI/8) {
+    for (float height = 0; height < PI*bodyB; height+= PI/8) {
         heads.push_back(head.getVertices());
         head.translate(glm::vec3(0, 0, -20));
         head.scale(cos(height/4), cos(height/4));
@@ -142,7 +157,7 @@ void ofApp::manyHeads() {
 //--------------------------------------------------------------
 ofPoint ofApp::makeHeadVertex(float angle) {
     ofPoint p = ofPoint();
-    float wobble = radius * (headA + headB * cos(angle * headC));
+    float wobble = radius * (bodyA + headB * cos(angle * headC));
     p.x = wobble * cos(angle - PI/2);
     p.y = wobble * sin(angle - PI/2);
     return p;
@@ -216,8 +231,10 @@ void ofApp::reset() {
     head.clear();
     body.clear();
     tentaclePlacements.clear();
+    mesh.clear();
     makeHead();
     makeBody();
+    makeMesh();
 }
 
 //--------------------------------------------------------------
