@@ -2,6 +2,7 @@
 
 #include "ofMain.h"
 #include "ofxGui.h"
+#include "ofxFatLine.h"
 
 class ofApp : public ofBaseApp{
 
@@ -36,6 +37,7 @@ class ofApp : public ofBaseApp{
         void rotateBody();
         void manyHeads();
         void makeMesh();
+        void makeFatLines();
         void reset();
     
         ofxPanel gui;
@@ -61,5 +63,6 @@ class ofApp : public ofBaseApp{
         ofParameter<float> bodyB;
     
         ofMesh mesh;
+        vector<ofxFatLine> fatlines;
 		
 };

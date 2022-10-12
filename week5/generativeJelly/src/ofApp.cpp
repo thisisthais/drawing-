@@ -2,6 +2,7 @@
 
 //--------------------------------------------------------------
 void ofApp::setup(){
+    ofBackground(ofColor::black);
     headSegments.addListener(this, &ofApp::headSegmentsChanged);
 //    headA.addListener(this, &ofApp::headAChanged);
     headB.addListener(this, &ofApp::headBChanged);
@@ -25,6 +26,7 @@ void ofApp::setup(){
     makeHead();
     makeBody();
     makeMesh();
+    makeFatLines();
 }
 
 //--------------------------------------------------------------
@@ -36,11 +38,15 @@ void ofApp::update(){
 void ofApp::draw(){
     ofPushView();
     cam.begin();
-    ofTranslate(-width/4, 0);
+    ofTranslate(-width/4, height/10);
     ofSetColor(ofColor::white);
 //    head.draw();
     for (int i = 0; i < heads.size(); i++) {
         heads[i].draw();
+    }
+    //    body.draw();
+    for (int i = 0; i < bodies.size(); i++) {
+        bodies[i].draw();
     }
     ofNoFill();
     ofSetColor(ofColor::red);
@@ -51,15 +57,58 @@ void ofApp::draw(){
       }
     ofTranslate(width/2, 0);
     ofSetColor(ofColor::white);
+    for (int i = 0; i < fatlines.size(); i++) {
+        fatlines[i].draw();
+    }
+    ofTranslate(-width/4, -height/2.5);
     mesh.draw();
     ofTranslate(-width/2,0);
-//    body.draw();
-    for (int i = 0; i < bodies.size(); i++) {
-        bodies[i].draw();
-    }
     cam.end();
     ofPopView();
     gui.draw();
+}
+
+//--------------------------------------------------------------
+void ofApp::makeFatLines() {
+    fatlines.clear();
+    ofFloatColor c;
+    vector<ofFloatColor> colors;
+    vector<double> weights;
+    for (int i = 0; i < bodies.size(); i++) {
+        bodies[i].close();
+        auto vertices = bodies[i].getVertices();
+        for (int j = 0; j < vertices.size(); j++) {
+            c.setHsb(0.5, 0.5, 1 );
+            colors.push_back(c);
+            weights.push_back(5);
+        }
+        ofxFatLine line = ofxFatLine(vertices, colors, weights);
+        line.enableFeathering();
+        line.setFeather(2);
+        line.setJointType(OFX_FATLINE_JOINT_MITER);
+        line.setCapType(OFX_FATLINE_CAP_BUTT);
+        fatlines.push_back(line);
+        colors.clear();
+        weights.clear();
+    }
+    
+    for (int i = 0; i < heads.size(); i++) {
+        heads[i].close();
+        auto vertices = heads[i].getVertices();
+        for (int j = 0; j < vertices.size(); j++) {
+            c.setHsb(0.3, 0.5, 1 );
+            colors.push_back(c);
+            weights.push_back(5);
+        }
+        ofxFatLine line = ofxFatLine(vertices, colors, weights);
+        line.enableFeathering();
+        line.setFeather(2);
+        line.setJointType(OFX_FATLINE_JOINT_MITER);
+        line.setCapType(OFX_FATLINE_CAP_BUTT);
+        fatlines.push_back(line);
+        colors.clear();
+        weights.clear();
+    }
 }
 
 //--------------------------------------------------------------
@@ -142,14 +191,15 @@ void ofApp::rotateBody() {
     for (float bodyAngle = 0; bodyAngle < 180; bodyAngle += step) {
         body.end();
         bodies.push_back(body.getVertices());
+        bodies.back().close();
         body.rotateDeg(bodyAngle, glm::vec3(0, 1, 0));
     }
 }
 
 void ofApp::manyHeads() {
-    for (float height = 0; height < PI*bodyB; height+= PI/8) {
+    for (float height = 0; height < PI; height+= PI/8/bodyB) {
         heads.push_back(head.getVertices());
-        head.translate(glm::vec3(0, 0, -20));
+        head.translate(glm::vec3(0, 0, -bodyB*20));
         head.scale(cos(height/4), cos(height/4));
     }
 }
@@ -232,9 +282,11 @@ void ofApp::reset() {
     body.clear();
     tentaclePlacements.clear();
     mesh.clear();
+    fatlines.clear();
     makeHead();
     makeBody();
     makeMesh();
+    makeFatLines();
 }
 
 //--------------------------------------------------------------
