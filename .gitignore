@@ -8,6 +8,8 @@ week4/*
 
 !week5/
 week5/*.png
+week5/*.mov
+week5/*.mp4
 
 # Not these files
 !.gitignore
