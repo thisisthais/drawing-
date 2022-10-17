@@ -11,6 +11,9 @@ week5/*.png
 week5/*.mov
 week5/*.mp4
 
+!week6/
+weel6/*
+
 # Not these files
 !.gitignore
 !README.md
