@@ -1,12 +1,13 @@
 #include "ofApp.h"
 
 //--------------------------------------------------------------
-void ofApp::setup(){	
+void ofApp::setup(){
     ofBackground(255);
     ofSetFrameRate(60);
     ofEnableSmoothing();
     ofEnableAlphaBlending();
     ofSetVerticalSync(true);
+    ofDisableArbTex();
     
     coreMotion.setupMagnetometer();
     coreMotion.setupGyroscope();
@@ -18,12 +19,14 @@ void ofApp::setup(){
     meanMagnitude = 0;
     inchesTravelled = 0;
     
-    ballHeight.reset(ofGetHeight() - 100);
-    ballHeight.setCurve(LINEAR);
-//    ballHeight.setRepeatType(LOOP_BACK_AND_FORTH);
-    ballHeight.setDuration(0.2);
-    
     ballLocation = ofPoint(ofGetWidth()/2, ofGetHeight()/2);
+    debugView = false;
+    showTitleScreen = true;
+    
+    fbo.allocate(ofGetWidth(), ofGetHeight(), GL_RGB, 0);
+    retroComputer.load("retro_computer.ttf", 64);
+    shader.load("shader.vert", "shader.frag");
+    chalk.load("chalk.jpg");
 }
 
 //--------------------------------------------------------------
@@ -59,74 +62,134 @@ void ofApp::update(){
         }
     }
     
-    inchesTravelled = steps * 27;
-    float targetHeight = ofMap(sin(inchesTravelled/500.0), -1, 1,  ofGetHeight() - 100, 100);
-    ballHeight.animateTo(targetHeight);
-    
-//    float dt = 1.0f * (sin(inchesTravelled) + 1) / 60.0f;
-    float dt = 1.0f / 60.0f;
-    ballHeight.update(dt);
-    
     ofVec2f diff = fingerLocation - ballLocation;
     diff.normalize();
+//    ofLog() << accMagnitudes.back();
+    float processedMagnitude = 0.0;
+    
+    if (accMagnitudes.back() >= 0.02) {
+        processedMagnitude = accMagnitudes.back();
+    }
+    
+    if (processedMagnitude >= 1.0) {
+        processedMagnitude = 1.0;
+    }
+    
     ballLocation += diff*accMagnitudes.back()*10.0; // threshold this so below a certain amount it doesn't move at all
     // also try average acceleration of last 10 points
     // name writing challenge
-    touchPoints.addVertex(ballLocation.x, ballLocation.y);
+    ballLine.addVertex(ballLocation.x, ballLocation.y);
     fingerLocation = ballLocation;
+    
+    float time = ofGetElapsedTimeMillis();
+    if (time > 3000) {
+        if (time > 7000) {
+            showTitleScreen = false;
+        } else {
+            if (remainder(time, 1000.0) > 0) {
+                showTitleScreen = true;
+            } else {
+                showTitleScreen = false;
+            }
+        }
+        
+    }
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-    // accelerometer
-    glm::vec3 a = coreMotion.getAccelerometerData();
-    ofDrawBitmapStringHighlight("Accelerometer: (x,y,z)", 20, 125);
-    ofSetColor(0);
-    ofDrawBitmapString(ofToString(a.x,3), 20, 150);
-    ofDrawBitmapString(ofToString(a.y,3), 120, 150);
-    ofDrawBitmapString(ofToString(a.z,3), 220, 150);
-    
-    // user acceleration
-    glm::vec3 m = coreMotion.getUserAcceleration();
-    ofDrawBitmapStringHighlight("User Acceleration: (x,y,z)", 20, 225);
-    ofSetColor(0);
-    ofDrawBitmapString(ofToString(m.x,3), 20, 250);
-    ofDrawBitmapString(ofToString(m.y,3), 120, 250);
-    ofDrawBitmapString(ofToString(m.z,3), 220, 250);
-    
-    ofDrawBitmapStringHighlight("Mean magnitude: (x,y,z)", 20, 325);
-    ofSetColor(0);
-    ofDrawBitmapString(ofToString(meanMagnitude,3), 20, 350);
-    
-    ofDrawBitmapStringHighlight("Steps: (x,y,z)", 20, 525);
-    ofSetColor(0);
-    ofDrawBitmapString(ofToString(steps,1), 20, 550);
-    
-    ofDrawBitmapStringHighlight("Inches travelled", 20, 725);
-    ofSetColor(0);
-    ofDrawBitmapString(ofToString(inchesTravelled,1), 20, 750);
-    
-    ofDrawBitmapStringHighlight("Target", 20, 925);
-    ofSetColor(0);
-    ofDrawBitmapString(ofToString(ballHeight.getTargetValue(),2), 20, 950);
-    
-    float height = ofGetHeight();
-    ofSetCircleResolution(100);
-    ofDrawCircle(ballLocation.x, ballLocation.y, 20);
-    
-    ofSetColor(ofColor::black);
-    float barWidth = ofGetWidth()/accMagnitudes.size();
-    for (int i = 0; i < accMagnitudes.size(); i++) {
-        ofDrawRectangle(i*barWidth, ofGetHeight() - 300, barWidth, -accMagnitudes[i]*200.0);
+    if (debugView) {
+        // accelerometer
+        glm::vec3 a = coreMotion.getAccelerometerData();
+        ofDrawBitmapStringHighlight("Accelerometer: (x,y,z)", 20, 125);
+        ofSetColor(0);
+        ofDrawBitmapString(ofToString(a.x,3), 20, 150);
+        ofDrawBitmapString(ofToString(a.y,3), 120, 150);
+        ofDrawBitmapString(ofToString(a.z,3), 220, 150);
+        
+        // user acceleration
+        glm::vec3 m = coreMotion.getUserAcceleration();
+        ofDrawBitmapStringHighlight("User Acceleration: (x,y,z)", 20, 225);
+        ofSetColor(0);
+        ofDrawBitmapString(ofToString(m.x,3), 20, 250);
+        ofDrawBitmapString(ofToString(m.y,3), 120, 250);
+        ofDrawBitmapString(ofToString(m.z,3), 220, 250);
+        
+        ofDrawBitmapStringHighlight("Mean magnitude: (x,y,z)", 20, 325);
+        ofSetColor(0);
+        ofDrawBitmapString(ofToString(meanMagnitude,3), 20, 350);
+        
+        ofDrawBitmapStringHighlight("Steps: (x,y,z)", 20, 525);
+        ofSetColor(0);
+        ofDrawBitmapString(ofToString(steps,1), 20, 550);
+        
+        ofDrawBitmapStringHighlight("Inches travelled", 20, 725);
+        ofSetColor(0);
+        ofDrawBitmapString(ofToString(inchesTravelled,1), 20, 750);
+        
+//        ofDrawBitmapStringHighlight("Target", 20, 925);
+//        ofSetColor(0);
+//        ofDrawBitmapString(ofToString(ballHeight.getTargetValue(),2), 20, 950);
+        
+        ofSetCircleResolution(100);
+        ofDrawCircle(ballLocation.x, ballLocation.y, 20);
+        
+        ofSetColor(ofColor::black);
+        float barWidth = ofGetWidth()/accMagnitudes.size();
+        for (int i = 0; i < accMagnitudes.size(); i++) {
+            ofDrawRectangle(i*barWidth, ofGetHeight() - 300, barWidth, -accMagnitudes[i]*200.0);
+        }
     }
     
-    ofSetColor(ofColor::red);
-    ofDrawCircle(fingerLocation.x, fingerLocation.y, 20);
     
-    ofSetColor(ofColor::blue);
-    touchPoints.getResampledByCount(2);
-    touchPoints.getSmoothed(2);
-    touchPoints.draw();
+//    ballLine.getResampledBySpacing(20);
+    ballLine.getSmoothed(2);
+//    ballLine.draw();
+    
+    ofMesh mesh;
+    mesh.setMode(OF_PRIMITIVE_TRIANGLE_STRIP);
+    
+    for (int i = 0; i < ballLine.size(); i++){
+            
+            int i_m_1 = i-1;
+            int i_p_1 = i+1;
+            if (i_m_1 < 0) i_m_1 = 0;
+            if (i_p_1 == ballLine.size()) i_p_1 = ballLine.size()-1;
+            ofPoint a = ballLine[i_m_1];
+            ofPoint b = ballLine[i];
+            ofPoint c = ballLine[i_p_1];
+            ofPoint diff  = (c-a).getNormalized();
+            diff = diff.getRotated(90, ofPoint(0, 0, 1));
+            
+            mesh.addVertex(b + diff*10);
+            mesh.addVertex(b - diff*10);
+            mesh.addColor(ofColor::white);
+            mesh.addColor(ofColor::white);
+            
+        }
+    
+    fbo.begin();
+        mesh.draw();
+    fbo.end();
+    
+    float resolution[] = {float(ofGetWidth()), float(ofGetHeight())};
+    shader.begin();
+    shader.setUniform1f("screenHeight", ofGetHeight());
+    shader.setUniform1f("screenWidth", ofGetWidth());
+    shader.setUniformTexture("chalkImg", chalk.getTexture(), 0);
+    shader.setUniformTexture("fbo", fbo.getTexture(), 1);
+    shader.setUniform2fv("resolution",resolution);
+
+    ofDrawRectangle(0, 0, ofGetWidth(), ofGetHeight());
+    shader.end();
+    
+    ofSetColor(ofColor::red);
+    if (showTitleScreen) {
+        retroComputer.drawString("YOU", ofGetWidth()/2, ofGetHeight()/2 - 100);
+        retroComputer.drawString("MUST", ofGetWidth()/2, ofGetHeight()/2);
+        retroComputer.drawString("RUN", ofGetWidth()/2, ofGetHeight()/2 + 100);
+    }
+    ofDrawCircle(fingerLocation.x, fingerLocation.y, 20);
 }
 
 //--------------------------------------------------------------

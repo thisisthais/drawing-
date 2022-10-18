@@ -2,7 +2,6 @@
 
 #include "ofxiOS.h"
 #include "ofxiOSCoreMotion.h"
-#include "ofxAnimatableFloat.h"
 
 class ofApp : public ofxiOSApp {
 	
@@ -31,10 +30,17 @@ class ofApp : public ofxiOSApp {
         int steps;
         int inchesTravelled;
         
-        ofxAnimatableFloat ballHeight;
         ofPoint ballLocation;
         ofPoint fingerLocation;
-        ofPolyline touchPoints;
+        ofPolyline ballLine;
+        bool debugView;
+    
+        ofShader shader;
+        ofImage chalk;
+        ofFbo fbo;
+        ofTrueTypeFont retroComputer;
+        bool showTitleScreen;
+
 };
 
 
