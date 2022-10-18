@@ -7,13 +7,13 @@ uniform float screenHeight;
 uniform float screenWidth;
 uniform sampler2D chalkImg;
 uniform sampler2D fbo;
-uniform vec2 resolution;
+uniform vec2 textureInternal;
 
 void main() {
     vec2 pos = gl_FragCoord.xy;
     pos.y = screenHeight - pos.y;
     vec2 normalizedPos = pos / vec2(screenWidth, screenHeight);
-    
+    normalizedPos *= textureInternal;
     vec3 chalkColor = texture2D(chalkImg, normalizedPos).rgb;
     vec3 fboColor = texture2D(fbo, normalizedPos).rgb;
     

@@ -64,7 +64,6 @@ void ofApp::update(){
     
     ofVec2f diff = fingerLocation - ballLocation;
     diff.normalize();
-//    ofLog() << accMagnitudes.back();
     float processedMagnitude = 0.0;
     
     if (accMagnitudes.back() >= 0.02) {
@@ -75,12 +74,10 @@ void ofApp::update(){
         processedMagnitude = 1.0;
     }
     
-    ballLocation += diff*processedMagnitude*10.0; // threshold this so below a certain amount it doesn't move at all
-    // also try average acceleration of last 10 points
+    ballLocation += diff*processedMagnitude*10.0;
     // name writing challenge
     ballLine.addVertex(ballLocation.x, ballLocation.y);
     lineMagnitudes.push_back(accMagnitudes.back());
-    ofLog() << lineMagnitudes.back();
     fingerLocation = ballLocation;
     
     float time = ofGetElapsedTimeMillis();
@@ -129,10 +126,6 @@ void ofApp::draw(){
         ofSetColor(0);
         ofDrawBitmapString(ofToString(inchesTravelled,1), 20, 750);
         
-//        ofDrawBitmapStringHighlight("Target", 20, 925);
-//        ofSetColor(0);
-//        ofDrawBitmapString(ofToString(ballHeight.getTargetValue(),2), 20, 950);
-        
         ofSetCircleResolution(100);
         ofDrawCircle(ballLocation.x, ballLocation.y, 20);
         
@@ -144,9 +137,7 @@ void ofApp::draw(){
     }
     
     
-//    ballLine.getResampledBySpacing(20);
     ballLine.getSmoothed(2);
-//    ballLine.draw();
     
     ofMesh mesh;
     mesh.setMode(OF_PRIMITIVE_TRIANGLE_STRIP);
@@ -175,22 +166,21 @@ void ofApp::draw(){
         mesh.draw();
     fbo.end();
     
-    float resolution[] = {float(ofGetWidth()), float(ofGetHeight())};
     shader.begin();
     shader.setUniform1f("screenHeight", ofGetHeight());
     shader.setUniform1f("screenWidth", ofGetWidth());
     shader.setUniformTexture("chalkImg", chalk.getTexture(), 0);
     shader.setUniformTexture("fbo", fbo.getTexture(), 1);
-    shader.setUniform2fv("resolution",resolution);
+    shader.setUniform2f("textureInternal",fbo.getTexture().getCoordFromPoint(fbo.getWidth(), fbo.getHeight()));
 
     ofDrawRectangle(0, 0, ofGetWidth(), ofGetHeight());
     shader.end();
     
     ofSetColor(ofColor::red);
     if (showTitleScreen) {
-        retroComputer.drawString("YOU", ofGetWidth()/2, ofGetHeight()/2 - 100);
-        retroComputer.drawString("MUST", ofGetWidth()/2, ofGetHeight()/2);
-        retroComputer.drawString("RUN", ofGetWidth()/2, ofGetHeight()/2 + 100);
+        retroComputer.drawString("YOU", ofGetWidth()/4 - 35, ofGetHeight()/2 - 180);
+        retroComputer.drawString("MUST", ofGetWidth()/4 - 35 , ofGetHeight()/2 - 80);
+        retroComputer.drawString("RUN", ofGetWidth()/4 - 35, ofGetHeight()/2 + 20);
     }
     ofDrawCircle(fingerLocation.x, fingerLocation.y, 20);
 }
