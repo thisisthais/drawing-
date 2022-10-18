@@ -75,10 +75,12 @@ void ofApp::update(){
         processedMagnitude = 1.0;
     }
     
-    ballLocation += diff*accMagnitudes.back()*10.0; // threshold this so below a certain amount it doesn't move at all
+    ballLocation += diff*processedMagnitude*10.0; // threshold this so below a certain amount it doesn't move at all
     // also try average acceleration of last 10 points
     // name writing challenge
     ballLine.addVertex(ballLocation.x, ballLocation.y);
+    lineMagnitudes.push_back(accMagnitudes.back());
+    ofLog() << lineMagnitudes.back();
     fingerLocation = ballLocation;
     
     float time = ofGetElapsedTimeMillis();
@@ -161,8 +163,9 @@ void ofApp::draw(){
             ofPoint diff  = (c-a).getNormalized();
             diff = diff.getRotated(90, ofPoint(0, 0, 1));
             
-            mesh.addVertex(b + diff*10);
-            mesh.addVertex(b - diff*10);
+            float lineWidth = ofMap(lineMagnitudes[i], 0.0, 2.0, 5, 50);
+            mesh.addVertex(b + diff*lineWidth);
+            mesh.addVertex(b - diff*lineWidth);
             mesh.addColor(ofColor::white);
             mesh.addColor(ofColor::white);
             
