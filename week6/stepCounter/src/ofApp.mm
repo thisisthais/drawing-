@@ -22,6 +22,7 @@ void ofApp::setup(){
     ballLocation = ofPoint(ofGetWidth()/2, ofGetHeight()/2);
     debugView = false;
     showTitleScreen = true;
+    ballLines.push_back(ofPolyline());
     
     fbo.allocate(ofGetWidth(), ofGetHeight(), GL_RGB, 0);
     retroComputer.load("retro_computer.ttf", 64);
@@ -76,7 +77,7 @@ void ofApp::update(){
     
     ballLocation += diff*processedMagnitude*10.0;
     // name writing challenge
-    ballLine.addVertex(ballLocation.x, ballLocation.y);
+    ballLines.back().addVertex(ballLocation.x, ballLocation.y);
     lineMagnitudes.push_back(accMagnitudes.back());
     fingerLocation = ballLocation;
     
@@ -136,42 +137,47 @@ void ofApp::draw(){
         }
     }
     
-    
-    ballLine.getSmoothed(2);
-    
-    ofMesh mesh;
-    mesh.setMode(OF_PRIMITIVE_TRIANGLE_STRIP);
-    
-    for (int i = 0; i < ballLine.size(); i++){
-            
-            int i_m_1 = i-1;
-            int i_p_1 = i+1;
-            if (i_m_1 < 0) i_m_1 = 0;
-            if (i_p_1 == ballLine.size()) i_p_1 = ballLine.size()-1;
-            ofPoint a = ballLine[i_m_1];
-            ofPoint b = ballLine[i];
-            ofPoint c = ballLine[i_p_1];
-            ofPoint diff  = (c-a).getNormalized();
-            diff = diff.getRotated(90, ofPoint(0, 0, 1));
-            
-            float lineWidth = ofMap(lineMagnitudes[i], 0.0, 2.0, 5, 50);
-            mesh.addVertex(b + diff*lineWidth);
-            mesh.addVertex(b - diff*lineWidth);
-            mesh.addColor(ofColor::white);
-            mesh.addColor(ofColor::white);
-            
-        }
-    
-    fbo.begin();
-        mesh.draw();
-    fbo.end();
+    for (int i = 0; i < ballLines.size(); i++) {
+        ofPolyline ballLine = ballLines[i];
+        ballLine.getSmoothed(2);
+        
+        ofMesh mesh;
+        mesh.setMode(OF_PRIMITIVE_TRIANGLE_STRIP);
+        
+        for (int i = 0; i < ballLine.size(); i++){
+                
+                int i_m_1 = i-1;
+                int i_p_1 = i+1;
+                if (i_m_1 < 0) i_m_1 = 0;
+                if (i_p_1 == ballLine.size()) i_p_1 = ballLine.size()-1;
+                ofPoint a = ballLine[i_m_1];
+                ofPoint b = ballLine[i];
+                ofPoint c = ballLine[i_p_1];
+                ofPoint diff  = (c-a).getNormalized();
+                diff = diff.getRotated(90, ofPoint(0, 0, 1));
+                
+                float lineWidth = ofMap(lineMagnitudes[i], 0.0, 2.0, 5, 50);
+                mesh.addVertex(b + diff*lineWidth);
+                mesh.addVertex(b - diff*lineWidth);
+                mesh.addColor(ofColor::white);
+                mesh.addColor(ofColor::white);
+                
+            }
+        
+        fbo.begin();
+            mesh.draw();
+        fbo.end();
+    }
+
     
     shader.begin();
     shader.setUniform1f("screenHeight", ofGetHeight());
     shader.setUniform1f("screenWidth", ofGetWidth());
     shader.setUniformTexture("chalkImg", chalk.getTexture(), 0);
+    shader.setUniform2f("chalkTextureInternal",chalk.getTexture().getCoordFromPoint(chalk.getWidth(), chalk.getHeight()));
     shader.setUniformTexture("fbo", fbo.getTexture(), 1);
-    shader.setUniform2f("textureInternal",fbo.getTexture().getCoordFromPoint(fbo.getWidth(), fbo.getHeight()));
+    shader.setUniform2f("fboTextureInternal",fbo.getTexture().getCoordFromPoint(fbo.getWidth(), fbo.getHeight()));
+    shader.setUniform1f("time", ofGetElapsedTimef());
 
     ofDrawRectangle(0, 0, ofGetWidth(), ofGetHeight());
     shader.end();
@@ -207,7 +213,10 @@ void ofApp::touchUp(ofTouchEventArgs & touch){
 
 //--------------------------------------------------------------
 void ofApp::touchDoubleTap(ofTouchEventArgs & touch){
-
+    ballLines.back().close();
+    ballLines.push_back(ofPolyline());
+    ballLocation = ofPoint(touch.x, touch.y);
+    fingerLocation = ballLocation;
 }
 
 //--------------------------------------------------------------

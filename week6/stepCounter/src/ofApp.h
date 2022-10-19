@@ -32,7 +32,8 @@ class ofApp : public ofxiOSApp {
         
         ofPoint ballLocation;
         ofPoint fingerLocation;
-        ofPolyline ballLine;
+//        ofPolyline ballLine;
+        vector<ofPolyline> ballLines;
         vector<float> lineMagnitudes;
         bool debugView;
     
