@@ -2,6 +2,8 @@
 /*
 
 # Not these directories
+!maquillage/
+
 !week4/
 week4/*
 !week4/tiltDraw/
