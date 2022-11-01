@@ -3,6 +3,7 @@
 #include "ofMain.h"
 #include "ofxFaceTracker2.h"
 #include "ofxKinect.h"
+#include "ofxGui.h"
 
 class ofApp : public ofBaseApp{
 
@@ -25,11 +26,23 @@ class ofApp : public ofBaseApp{
     
     void drawPointCloud();
 
-    ofxFaceTracker2 tracker;
+    ofxFaceTracker2 faceTracker;
     ofxKinect kinect;
     ofMesh pointCloud;
     bool b_drawPointCloud;
     ofEasyCam cam;
+
+    ofxCv::ContourFinder contourFinder;
+    ofxPanel gui;
+    ofxFloatSlider thresh;
+    ofxFloatSlider minRadius;
+    ofxFloatSlider maxRadius;
+    
+    ofImage background;
+    ofImage diff;
+    ofImage thresholdImage;
+    ofPolyline myLine;
+    ofPixels depthPixels;
     
     vector<ofImage> stamps;
     

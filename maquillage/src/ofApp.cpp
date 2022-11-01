@@ -5,25 +5,65 @@ void ofApp::setup(){
 
     ofSetFrameRate(60);
     ofSetVerticalSync(true);
+    ofBackground(0);
     
-    tracker.setup();
+    faceTracker.setup();
+    contourFinder.setSortBySize(true);
     
     kinect.setRegistration(true);
     kinect.init();
     kinect.open();
     
+    ofSetWindowShape(kinect.width*2, kinect.height*2);
+    
+    ofxCv::imitate(background, kinect);
+    ofxCv::imitate(diff, kinect);
+    ofxCv::imitate(thresholdImage, kinect);
+    
+    ofSetLineWidth(3);
+    
+    gui.setup();
+    gui.add(thresh.setup("Threshhold", 10, 0, 255));
+    gui.add(minRadius.setup("Min Radius", 10, 0, 400));
+    gui.add(maxRadius.setup("Max Radius", 200, 0, 400));
+    
     b_drawPointCloud = false;
     pointCloud.setMode(OF_PRIMITIVE_POINTS);
+    
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
     
+    contourFinder.setMinAreaRadius(minRadius);
+    contourFinder.setMaxAreaRadius(maxRadius);
+    contourFinder.setThreshold(thresh);
+    
     kinect.update();
     
     if (kinect.isFrameNew()){
-        tracker.update(kinect);
+        faceTracker.update(kinect);
+        
+        depthPixels = kinect.getDepthPixels();
+        // absdiff(ofImage x, ofImage y, ofImagez)
+        // calculate the absolute difference between x and y
+        // and assigns it to z
+        ofxCv::absdiff(kinect, background, diff);
+        // when we do an ofxCv operation on an image,
+        // we have to update it
+        // this operation happens on the graphics card
+        diff.update();
+        
+        ofxCv::convertColor(diff, thresholdImage, CV_RGB2GRAY);
+        ofxCv::threshold(thresholdImage, thresh);
+        thresholdImage.update();
+        
+        
+        // find the contours on the ofImage diff
+        contourFinder.findContours(diff);
+
     }
+    
     
     ofSetWindowTitle(ofToString(ofGetFrameRate()));
 }
@@ -34,6 +74,8 @@ void ofApp::draw(){
     // draw the image on grabber on the upper left corner
 //    grabber.draw(0,0);
 //    grabber.draw(grabber.getWidth(),0,-grabber.getWidth(),grabber.getHeight());
+    
+//    ofxCv::RectTracker& contourTracker = contourFinder.getTracker();
 
     
     if (b_drawPointCloud) {
@@ -44,10 +86,25 @@ void ofApp::draw(){
 
     } else {
         
-        kinect.draw(0, 0, kinect.width, kinect.height);
-        tracker.drawDebug();
+//        kinect.draw(0, 0, kinect.width, kinect.height);
+//        faceTracker.drawDebug();
+//
+//        kinect.drawDepth(kinect.width, 0, kinect.width, kinect.height);
+        
 
-        kinect.drawDepth(kinect.width, 0, kinect.width, kinect.height);
+
+        kinect.draw(0, 0);
+        thresholdImage.draw(kinect.width, 0);
+        background.draw(0, kinect.height);
+        diff.draw(kinect.width, kinect.height);
+        
+//        kinect.drawDepth(kinect.width, kinect.height);
+//
+//
+        contourFinder.draw();
+
+
+        gui.draw();
         
     }
     
@@ -80,6 +137,15 @@ void ofApp::keyPressed(int key){
     switch(key) {
         case 'p':
             b_drawPointCloud = !b_drawPointCloud;
+            break;
+        case ' ':
+            // copy the content from kinect camera to background
+            ofxCv::copy(kinect, background);
+            // update the ofImage we did an ofxCv operation on
+            background.update();
+            break;
+        case 'l':
+            myLine.clear();
             break;
         default:
             break;
