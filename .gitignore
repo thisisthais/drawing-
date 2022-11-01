@@ -3,6 +3,7 @@
 
 # Not these directories
 !maquillage/
+maquillage/bin/data/model/
 
 !week4/
 week4/*

@@ -28,6 +28,7 @@ void ofApp::setup(){
     gui.add(maxRadius.setup("Max Radius", 200, 0, 400));
     
     b_drawPointCloud = false;
+    useDepthPixels = false;
     pointCloud.setMode(OF_PRIMITIVE_POINTS);
     
 }
@@ -48,13 +49,17 @@ void ofApp::update(){
         // absdiff(ofImage x, ofImage y, ofImagez)
         // calculate the absolute difference between x and y
         // and assigns it to z
-        ofxCv::absdiff(kinect, background, diff);
+        if (useDepthPixels) {
+            ofxCv::absdiff(depthPixels, background, diff);
+        } else {
+            ofxCv::absdiff(kinect, background, diff);
+            ofxCv::convertColor(diff, thresholdImage, CV_RGB2GRAY);
+        }
         // when we do an ofxCv operation on an image,
         // we have to update it
         // this operation happens on the graphics card
         diff.update();
         
-        ofxCv::convertColor(diff, thresholdImage, CV_RGB2GRAY);
         ofxCv::threshold(thresholdImage, thresh);
         thresholdImage.update();
         
@@ -93,14 +98,15 @@ void ofApp::draw(){
         
 
 
-        kinect.draw(0, 0);
-        thresholdImage.draw(kinect.width, 0);
-        background.draw(0, kinect.height);
-        diff.draw(kinect.width, kinect.height);
+        if (useDepthPixels) {
+            kinect.drawDepth(0, 0);
+        } else {
+            kinect.draw(0, 0);
+        }
+        background.draw(kinect.width, 0);
+        diff.draw(0, kinect.height);
+        thresholdImage.draw(kinect.width, kinect.height);
         
-//        kinect.drawDepth(kinect.width, kinect.height);
-//
-//
         contourFinder.draw();
 
 
@@ -144,8 +150,8 @@ void ofApp::keyPressed(int key){
             // update the ofImage we did an ofxCv operation on
             background.update();
             break;
-        case 'l':
-            myLine.clear();
+        case 'd':
+            useDepthPixels = !useDepthPixels;
             break;
         default:
             break;

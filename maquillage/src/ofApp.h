@@ -41,8 +41,8 @@ class ofApp : public ofBaseApp{
     ofImage background;
     ofImage diff;
     ofImage thresholdImage;
-    ofPolyline myLine;
     ofPixels depthPixels;
+    bool useDepthPixels;
     
     vector<ofImage> stamps;
     
