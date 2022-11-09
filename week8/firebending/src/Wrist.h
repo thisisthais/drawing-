@@ -24,8 +24,8 @@ class Wrist {
     glm::vec3 detection;
     glm::vec3 neckDetection;
     ofPolyline path;
-    std::vector<float> velocities;
-    std::vector<float> accels;
+    std::vector<glm::vec2> velocities;
+    std::vector<glm::vec2> accels;
     std::vector<Particle> particles;
     
     Wrist();

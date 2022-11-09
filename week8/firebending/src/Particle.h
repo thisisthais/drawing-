@@ -19,13 +19,14 @@ class Particle {
     void run();
     bool isDead();
     
+    ofPolyline path;
     glm::vec2 location;
     glm::vec2 velocity;
     glm::vec2 acceleration;
     float lifespan;
     
     Particle();
-    Particle(glm::vec2 _location);
+    Particle(glm::vec2 _location, glm::vec2 _velocity);
     
     private:
 };

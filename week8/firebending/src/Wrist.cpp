@@ -31,22 +31,38 @@ void Wrist::update(glm::vec3 _detection, glm::vec3 _neckDetection) {
         path.addVertex(x, y);
         
         if (path.size() > 1) {
-            ofPoint prev = path[path.size() - 1];
-            ofPoint curr = path[path.size()];
+            ofPoint prev = path[path.size() - 2];
+            ofPoint curr = path[path.size() - 1];
             
-            float vel = (curr - prev).length();
-            if (vel > 0 && vel < 10000) {
+            glm::vec2 vel = glm::vec2(curr.x, curr.y) - glm::vec2(prev.x, prev.y);
+            if (vel.length() > 0 && vel.length() < 10000) {
                 velocities.push_back(vel);
+            }
+            
+            if (velocities.size() > 1) {
+                glm::vec2 prev = velocities.at(velocities.size() - 2);
+                glm::vec2 curr = velocities.back();
+                
+                glm::vec2 acc = curr - prev;
+                accels.push_back(acc);
+                
+                if (neckDetection.z > 0.4) {
+                    ofPoint diff = ofPoint(x, y) - ofPoint(neckDetection.x, neckDetection.y);
+                    float angle = atan2f(diff.x, diff.y) * RAD_TO_DEG;
+//                    ofLog() << angle;
+                    
+                    // get just the integer part of the magnitude of acceleration
+                    float whole = 1.;
+                    modf(glm::length(acc), &whole);
+    //                ofLog() << whole;
+                    
+                    if (whole == 0 && abs(angle) > 50.0 && abs(angle) < 100.0) {
+                        particles.push_back(Particle(glm::vec2(x, y), vel));
+                    }
+                }
             }
         }
         
-        if (velocities.size() > 1) {
-            float prev = velocities.at(velocities.size() - 2);
-            float curr = velocities.back();
-            
-            float acc = curr - prev;
-            accels.push_back(acc);
-        }
     }
     
     if (path.size() > 100) {
@@ -57,39 +73,32 @@ void Wrist::update(glm::vec3 _detection, glm::vec3 _neckDetection) {
         velocities.erase(velocities.begin());
     }
     
-    if (neckDetection.z > 0.4) {
-        ofPoint diff = ofPoint(x, y) - ofPoint(neckDetection.x, neckDetection.y);
-        float angle = atan2f(diff.x, diff.y) * RAD_TO_DEG;
-        ofLog() << angle;
-    }
-    
-    
 }
 
 void Wrist::draw() {
     if (confidence > 0.5) {
         ofPushStyle();
         
-        float acc;
-        if (accels.size() > 0) {
-            acc = accels.back();
-        } else {
-            acc = -1;
-        }
-        
-        float whole;
-        modf(acc, &whole);
-        
-        if (whole == 0) {
-            ofSetColor(ofColor::red);
-        } else {
-            ofSetColor(ofColor::blue);
-        }
-        ofDrawCircle(x, y, 20);
+//        glm::vec2 acc;
+//        if (accels.size() > 0) {
+//            acc = accels.back();
+//        } else {
+//            acc = glm::vec2(-1, -1);
+//        }
+//
+//        // get just the integer part of the magnitude of acceleration
+//        float whole = 1.;
+//        modf(glm::length(acc), &whole);
+//
+//        if (whole == 0) {
+//            ofSetColor(ofColor::red);
+//        } else {
+//            ofSetColor(ofColor::blue);
+//        }
+        ofSetColor(ofColor::blue);
+//        ofDrawCircle(x, y, 20);
         ofPopStyle();
     }
-    
-    particles.push_back(Particle(glm::vec2(ofGetWidth()/2, ofGetHeight()/2)));
     
     for (int i = particles.size() - 1; i >= 0 ; i--) {
         if (particles.at(i).isDead()) {
