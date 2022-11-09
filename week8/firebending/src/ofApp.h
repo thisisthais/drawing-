@@ -40,8 +40,6 @@ class ofApp : public ofBaseApp{
         Wrist leftWrist;
         Wrist rightWrist;
     
-        Particle particle;
-    
         /// gui
         ofxPanel gui;
 		

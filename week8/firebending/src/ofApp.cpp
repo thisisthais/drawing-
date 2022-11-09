@@ -16,8 +16,6 @@ void ofApp::setup(){
     leftWrist.setup();
     rightWrist.setup();
     
-    particle = Particle(glm::vec2(ofGetWidth()/2, ofGetHeight()/2));
-    
     gui.setup();
     gui.setPosition(640+50, 50);
 
@@ -43,8 +41,6 @@ void ofApp::update(){
 
     leftWrist.update(body.detections[0][BODY_LEFTWRIST], body.detections[0][BODY_NECK]);
     rightWrist.update(body.detections[0][BODY_RIGHTWRIST], body.detections[0][BODY_NECK]);
-    
-    particle.update();
 
 }
 
@@ -88,8 +84,6 @@ void ofApp::draw(){
     
     leftWrist.draw();
     rightWrist.draw();
-
-    particle.draw();
 }
 
 //--------------------------------------------------------------

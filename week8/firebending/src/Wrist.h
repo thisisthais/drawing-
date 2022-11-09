@@ -9,6 +9,7 @@
 #define Wrist_h
 
 #include "ofMain.h"
+#include "Particle.h"
 
 class Wrist {
     public:
@@ -25,6 +26,7 @@ class Wrist {
     ofPolyline path;
     std::vector<float> velocities;
     std::vector<float> accels;
+    std::vector<Particle> particles;
     
     Wrist();
     

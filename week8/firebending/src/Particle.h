@@ -16,6 +16,7 @@ class Particle {
     void setup();
     void update();
     void draw();
+    void run();
     bool isDead();
     
     glm::vec2 location;

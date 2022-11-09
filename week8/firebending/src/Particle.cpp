@@ -16,7 +16,7 @@ Particle::Particle(glm::vec2 _location) {
 //    velocity = glm::vec2(0, 0);
     acceleration = glm::vec2(0, 0.05);
     velocity = glm::vec2(ofRandom(-1.0, 1.0), ofRandom(-2.0, 0.0));
-    lifespan = 255;
+    lifespan = 255.0;
 }
 
 void Particle::setup() {
@@ -26,7 +26,7 @@ void Particle::setup() {
 void Particle::update() {
     velocity = velocity + acceleration;
     location = location + velocity;
-    lifespan = lifespan - 1;
+    lifespan = lifespan - 2.0;
 }
 
 void Particle::draw() {
@@ -38,6 +38,11 @@ void Particle::draw() {
         ofDisableAlphaBlending();
         ofPopStyle();
     }
+}
+
+void Particle::run() {
+    update();
+    draw();
 }
 
 bool Particle::isDead() {

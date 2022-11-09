@@ -63,23 +63,7 @@ void Wrist::update(glm::vec3 _detection, glm::vec3 _neckDetection) {
         ofLog() << angle;
     }
     
-//    for (int i = 0; i < path.size(); i++) {
-//        int i_minus_1 = i - 1;
-//        int i_plus_1 = i + 1;
-//        if (i_minus_1 < 0) {
-//            i_minus_1 = 0;
-//        }
-//        if (i_plus_1 == path.size()) {
-//            i_plus_1 = path.size()-1;
-//        }
-//
-//        ofPoint prev = path[i_minus_1];
-//        ofPoint curr = path[i];
-//        ofPoint next = path[i_plus_1];
-//
-//        float vel = (next - prev).length();
-//        ofLog() << vel;
-//    }
+    
 }
 
 void Wrist::draw() {
@@ -103,5 +87,15 @@ void Wrist::draw() {
         }
         ofDrawCircle(x, y, 20);
         ofPopStyle();
+    }
+    
+    particles.push_back(Particle(glm::vec2(ofGetWidth()/2, ofGetHeight()/2)));
+    
+    for (int i = particles.size() - 1; i >= 0 ; i--) {
+        if (particles.at(i).isDead()) {
+            particles.erase(particles.begin() + i);
+        } else {
+            particles.at(i).run();
+        }
     }
 }
