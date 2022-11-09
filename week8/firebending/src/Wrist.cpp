@@ -50,13 +50,14 @@ void Wrist::update(glm::vec3 _detection, glm::vec3 _neckDetection) {
                     ofPoint diff = ofPoint(x, y) - ofPoint(neckDetection.x, neckDetection.y);
                     float angle = atan2f(diff.x, diff.y) * RAD_TO_DEG;
 //                    ofLog() << angle;
-                    
+//
                     // get just the integer part of the magnitude of acceleration
                     float whole = 1.;
                     modf(glm::length(acc), &whole);
     //                ofLog() << whole;
                     
-                    if (whole == 0 && abs(angle) > 50.0 && abs(angle) < 100.0) {
+                    float xDiff = abs(x - neckDetection.x);
+                    if (whole == 0 && abs(angle) > 70.0 && abs(angle) < 100.0 && xDiff > 100.0) {
                         particles.push_back(Particle(glm::vec2(x, y), vel));
                     }
                 }
@@ -100,6 +101,7 @@ void Wrist::draw() {
         ofPopStyle();
     }
     
+    ofLog() << particles.size();
     for (int i = particles.size() - 1; i >= 0 ; i--) {
         if (particles.at(i).isDead()) {
             particles.erase(particles.begin() + i);

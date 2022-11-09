@@ -29,6 +29,8 @@ void Particle::update() {
     lifespan = lifespan - 2.0;
     
     path.addVertex(location.x, location.y);
+//    circles.push_back(glm::vec3(location.x, location.y, ofRandom(5.0, 20.0)));
+//    colors.push_back(ofColor(255, 69, 0, lifespan));
     
     if (path.size() > 20) {
         path.getVertices().erase(path.begin());
@@ -39,22 +41,16 @@ void Particle::draw() {
     if (!isDead()) {
         ofPushStyle();
         ofEnableAlphaBlending();
-        ofSetColor(255, 69, 0, lifespan);
+//        ofSetColor(255, 69, 0, lifespan);
 //        ofDrawCircle(location.x, location.y, 10);
-        
-        vector<glm::vec3> vertices = path.getVertices();
-        for (int i = 0; i < vertices.size(); i++) {
-            glm::vec3 vertex = vertices[i];
-            glm::vec3 tangent = path.getTangentAtIndex(i) * 100.0;
-            ofLog() << vertex;
-            ofLog() << tangent;
-            ofDrawLine(vertex-tangent/2, vertex+tangent/2);
-        }
-        
+//        for (int i = 0; i < circles.size(); i++) {
+//            ofSetColor(colors.at(i));
+//            ofDrawCircle(circles.at(i).x, circles.at(i).y, circles.at(i).z);
+//        }
         ofDisableAlphaBlending();
         
         ofSetColor(ofColor::purple);
-//        path.draw();
+        path.draw();
         
         ofPopStyle();
     }
