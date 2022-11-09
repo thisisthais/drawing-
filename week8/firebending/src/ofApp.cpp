@@ -55,29 +55,22 @@ void ofApp::draw(){
     
     ofPushStyle();
     ofSetColor(255, 255, 255, 99);
-//    for (int i = 0; i < body.n_det; i++){
-//        for (int j = 0; j < BODY_N_PART; j++){
-//            if (body.detections[i][j].z >= 0.5) { /// z is the confidence score
-//                ofDrawCircle(body.detections[i][j].x, body.detections[i][j].y, 4);
-//            }
-//        }
-//    }
     
     glm::vec3 LEFT = body.detections[0][BODY_LEFTWRIST];
     glm::vec3 RIGHT = body.detections[0][BODY_RIGHTWRIST];
     glm::vec3 NECK = body.detections[0][BODY_NECK];
     
-    if (LEFT.z > 0.5) {
-        ofDrawCircle(LEFT.x, LEFT.y, 4);
-    }
-    
-    if (RIGHT.z > 0.5) {
-        ofDrawCircle(RIGHT.x, RIGHT.y, 4);
-    }
-    
-    if (NECK.z > 0.5) {
-        ofDrawCircle(NECK.x, NECK.y, 4);
-    }
+//    if (LEFT.z > 0.5) {
+//        ofDrawCircle(LEFT.x, LEFT.y, 4);
+//    }
+//    
+//    if (RIGHT.z > 0.5) {
+//        ofDrawCircle(RIGHT.x, RIGHT.y, 4);
+//    }
+//    
+//    if (NECK.z > 0.5) {
+//        ofDrawCircle(NECK.x, NECK.y, 4);
+//    }
     
         
     ofPopStyle();

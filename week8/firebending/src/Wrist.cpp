@@ -96,7 +96,7 @@ void Wrist::draw() {
 //        } else {
 //            ofSetColor(ofColor::blue);
 //        }
-        ofSetColor(ofColor::blue);
+//        ofSetColor(ofColor::blue);
 //        ofDrawCircle(x, y, 20);
         ofPopStyle();
     }
