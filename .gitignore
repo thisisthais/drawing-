@@ -21,6 +21,8 @@ week6/*
 week8/*
 !week8/firebending/
 
+!final/
+
 # Not these files
 !.gitignore
 !README.md

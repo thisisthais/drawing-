@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<group>
+	<OSC>
+		<OSC_Host>localhost</OSC_Host>
+		<OSC_Port>9527</OSC_Port>
+	</OSC>
+	<Camera>
+		<Camera_ID>0</Camera_ID>
+		<Camera_Width>1024</Camera_Width>
+		<Camera_Height>768</Camera_Height>
+	</Camera>
+	<Vision>
+		<Detect_Hand>1</Detect_Hand>
+	</Vision>
+</group>
