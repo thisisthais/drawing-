@@ -4,6 +4,8 @@
 
 #include "ofxGui.h"
 #include "ofxOsc.h"
+#include "ofxOneDollar.h"
+//#include "SimpleButton.h"
 
 #include "constants.h"
 
@@ -27,6 +29,15 @@ class ofApp : public ofBaseApp{
 		void windowResized(int w, int h);
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
+    
+    void createNewGesture();
+    void showMessage(string sMessage, int nDelay = 2000);
+    
+    void saveToFile();
+    void clearLine();
+    void createGesture();
+    void find();
+    void loadFromFile();
   
   void resetCamOsc();
   
@@ -49,4 +60,28 @@ class ofApp : public ofBaseApp{
   ofParameterGroup do_group = {"Vision", do_hand};
 
   ofxButton btn_reset;
+    
+//    one dollar example stuff
+    
+//    SimpleButton save_to_file;
+//    SimpleButton clear_line;
+//    SimpleButton create_gesture;
+//    SimpleButton find;
+//    SimpleButton load_from_file;
+    
+    ofxButton save_to_file;
+    ofxButton clear_line;
+    ofxButton create_gesture;
+    ofxButton find_btn;
+    ofxButton load_from_file;
+    
+    vector<ofVec2f> line;
+    vector<ofVec2f> found_gesture;
+    ofxOneDollar dollar;
+    ofxGesture* gesture;
+    int num_created_gestures;
+    
+    int mode;
+    string message;
+    int hide_message_on;
 };
