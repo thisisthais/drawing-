@@ -107,8 +107,31 @@ void ofApp::draw(){
     find_btn.draw();
 
     if(mode == 0) {
-        ofPolyline smoothline = line.getSmoothed(5);
-        line.draw();
+        ofPolyline smoothline = line.getSmoothed(2);
+        smoothline.draw();
+        
+        ofMesh mesh;
+        mesh.setMode(OF_PRIMITIVE_TRIANGLE_STRIP);
+        
+        for (int i = 0; i < line.size(); i++){
+            
+            int i_m_1 = i-1;
+            int i_p_1 = i+1;
+            if (i_m_1 < 0) i_m_1 = 0;
+            if (i_p_1 == line.size()) i_p_1 = line.size()-1;
+            ofPoint a = line[i_m_1];
+            ofPoint b = line[i];
+            ofPoint c = line[i_p_1];
+            ofPoint diff  = (c-a).getNormalized();
+            diff = diff.getRotated(90, ofPoint(0, 0, 1));
+            
+            mesh.addVertex(b + diff*5);
+            mesh.addVertex(b - diff*5);
+            mesh.addColor(ofColor::white);
+            mesh.addColor(ofColor::black);
+            
+        }
+        mesh.draw();
     }
     else if (mode == 1) {
         glColor3f(1.0f, 0.0f, 0.6f);
