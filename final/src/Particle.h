@@ -19,12 +19,10 @@ class Particle {
     void run();
     bool isDead();
     
-    ofPolyline path;
     std::vector<glm::vec3> circles;
     std::vector<ofColor> colors;
+    std::vector<ofPath> circles2;
     glm::vec2 location;
-    glm::vec2 velocity;
-    glm::vec2 acceleration;
     float lifespan;
     
     Particle();

@@ -204,7 +204,6 @@ void ofApp::loadFromFile() {
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
-    ofLog() << key;
     if (key == 116 || key == 102) { // 116 is t for train, 102 is f for find
         ofVec3f fingertip = hand.detections[0][HAND_INDEX3];
         if(mode == 0 && fingertip.z > 0.7) { // z is confidence
