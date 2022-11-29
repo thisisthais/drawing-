@@ -10,10 +10,10 @@
 Particle::Particle() {
     
 }
-Particle::Particle(glm::vec2 _location, glm::vec2 _velocity) {
+Particle::Particle(glm::vec2 _location, string _gestureName) {
     location = _location;
-    velocity = _velocity;
-    acceleration = glm::vec2(-0.5, 0.01);
+//    velocity = _velocity;
+//    acceleration = glm::vec2(-0.5, 0.01);
 //    acceleration = glm::vec2(0, 0.05);
 //    velocity = glm::vec2(ofRandom(-1.0, 1.0), ofRandom(-2.0, 0.0));
     lifespan = 150.0;
@@ -24,8 +24,8 @@ void Particle::setup() {
 }
 
 void Particle::update() {
-    velocity = velocity + acceleration;
-    location = location + velocity;
+//    velocity = velocity + acceleration;
+//    location = location + velocity;
     lifespan = lifespan - 2.0;
     
     path.addVertex(location.x, location.y);

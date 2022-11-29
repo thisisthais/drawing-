@@ -28,7 +28,7 @@ class Particle {
     float lifespan;
     
     Particle();
-    Particle(glm::vec2 _location, glm::vec2 _velocity);
+    Particle(glm::vec2 _location, string _gestureName);
     
     private:
 };

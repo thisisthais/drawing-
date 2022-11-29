@@ -183,7 +183,7 @@ void ofApp::find() {
         found_gesture.clear();
         
         ofPoint centroid = line.getCentroid2D();
-        particles.push_back(Particle(glm::vec2(centroid.x, centroid.y), glm::vec2(0.5, 0.5)));
+        particles.push_back(Particle(glm::vec2(centroid.x, centroid.y), "test"));
         
         float dx = ofGetWidth()/2;
         float dy = ofGetHeight()/2;
