@@ -32,6 +32,12 @@
 		D665D26D293426D4009D00EA /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D665D26C293426D4009D00EA /* Foundation.framework */; };
 		D665D26F293426D8009D00EA /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D665D26E293426D8009D00EA /* AVFoundation.framework */; };
 		D665D271293426DD009D00EA /* CoreML.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D665D270293426DD009D00EA /* CoreML.framework */; };
+		D665D29D29366A79009D00EA /* Particle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D665D29C29366A79009D00EA /* Particle.cpp */; };
+		D665D29E29366C41009D00EA /* ofApp.h in Sources */ = {isa = PBXBuildFile; fileRef = E4B69E1F0A3A1BDC003C02F2 /* ofApp.h */; };
+		D665D29F29366C41009D00EA /* ofxOneDollar.h in Sources */ = {isa = PBXBuildFile; fileRef = D665D29629342E0E009D00EA /* ofxOneDollar.h */; };
+		D665D2A029366C41009D00EA /* hand.h in Sources */ = {isa = PBXBuildFile; fileRef = 232DABB68A31EAFC8AACC22D /* hand.h */; };
+		D665D2A129366C41009D00EA /* Particle.h in Sources */ = {isa = PBXBuildFile; fileRef = D665D29B29366A79009D00EA /* Particle.h */; };
+		D665D2A229366C41009D00EA /* constants.h in Sources */ = {isa = PBXBuildFile; fileRef = 64D31F0818BD6C0D005543CF /* constants.h */; };
 		E2D96A7EEFDDCFF778B0A209 /* OscOutboundPacketStream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 71BC495FF26C8D604604A205 /* OscOutboundPacketStream.cpp */; };
 		E3B45DDEB6A6E531E9CEC829 /* OscReceivedElements.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 04A4D4DDF79561A07084037A /* OscReceivedElements.cpp */; };
 		E4B69E200A3A1BDC003C02F2 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4B69E1D0A3A1BDC003C02F2 /* main.cpp */; };
@@ -100,11 +106,9 @@
 		D665D26C293426D4009D00EA /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		D665D26E293426D8009D00EA /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		D665D270293426DD009D00EA /* CoreML.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreML.framework; path = System/Library/Frameworks/CoreML.framework; sourceTree = SDKROOT; };
-		D665D29629342E0E009D00EA /* ofxOneDollar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = ofxOneDollar.h; path = ../../of_v0.11.2_osx_release/addons/ofxOneDollar/src/ofxOneDollar.h; sourceTree = "<group>"; };
-		D665D29729342E3B009D00EA /* SimpleButton.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = SimpleButton.cpp; path = ../../of_v0.11.2_osx_release/addons/ofxOneDollar/example/SimpleButton.cpp; sourceTree = "<group>"; };
-		D665D29829342E3B009D00EA /* testApp.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = testApp.h; path = ../../of_v0.11.2_osx_release/addons/ofxOneDollar/example/testApp.h; sourceTree = "<group>"; };
-		D665D29929342E3B009D00EA /* SimpleButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = SimpleButton.h; path = ../../of_v0.11.2_osx_release/addons/ofxOneDollar/example/SimpleButton.h; sourceTree = "<group>"; };
-		D665D29A29342E3C009D00EA /* testApp.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = testApp.cpp; path = ../../of_v0.11.2_osx_release/addons/ofxOneDollar/example/testApp.cpp; sourceTree = "<group>"; };
+		D665D29629342E0E009D00EA /* ofxOneDollar.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; name = ofxOneDollar.h; path = ../of_v0.11.2_osx_release/addons/ofxOneDollar/src/ofxOneDollar.h; sourceTree = SOURCE_ROOT; };
+		D665D29B29366A79009D00EA /* Particle.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = Particle.h; path = ../week8/firebending/src/Particle.h; sourceTree = SOURCE_ROOT; };
+		D665D29C29366A79009D00EA /* Particle.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = Particle.cpp; path = ../week8/firebending/src/Particle.cpp; sourceTree = SOURCE_ROOT; };
 		D66753E9B1FE1AA316DE0D83 /* IpEndpointName.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = IpEndpointName.h; path = ../of_v0.11.2_osx_release/addons/ofxOsc/libs/oscpack/src/ip/IpEndpointName.h; sourceTree = SOURCE_ROOT; };
 		D6F7D07CDD3B0E1EE9073F1F /* ofxOscReceiver.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = ofxOscReceiver.h; path = ../of_v0.11.2_osx_release/addons/ofxOsc/src/ofxOscReceiver.h; sourceTree = SOURCE_ROOT; };
 		D774562AD0244B3A44FEBE22 /* ofxLabel.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = ofxLabel.h; path = ../of_v0.11.2_osx_release/addons/ofxGui/src/ofxLabel.h; sourceTree = SOURCE_ROOT; };
@@ -754,10 +758,8 @@
 		E4B69E1C0A3A1BDC003C02F2 /* src */ = {
 			isa = PBXGroup;
 			children = (
-				D665D29729342E3B009D00EA /* SimpleButton.cpp */,
-				D665D29929342E3B009D00EA /* SimpleButton.h */,
-				D665D29A29342E3C009D00EA /* testApp.cpp */,
-				D665D29829342E3B009D00EA /* testApp.h */,
+				D665D29C29366A79009D00EA /* Particle.cpp */,
+				D665D29B29366A79009D00EA /* Particle.h */,
 				D665D29629342E0E009D00EA /* ofxOneDollar.h */,
 				E4B69E1D0A3A1BDC003C02F2 /* main.cpp */,
 				E4B69E1E0A3A1BDC003C02F2 /* ofApp.cpp */,
@@ -903,18 +905,24 @@
 				262936A36931A72C346C4EC7 /* ofxSlider.cpp in Sources */,
 				F9A7A7ECDB235B8BD6C1316E /* ofxSliderGroup.cpp in Sources */,
 				B5C3EDCA42D2EC79C775171B /* ofxToggle.cpp in Sources */,
+				D665D29F29366C41009D00EA /* ofxOneDollar.h in Sources */,
+				D665D29D29366A79009D00EA /* Particle.cpp in Sources */,
 				002ED9505D5564C8FFB26C10 /* IpEndpointName.cpp in Sources */,
 				6CC6057F98F1ADF767FDF5E0 /* NetworkingUtils.cpp in Sources */,
 				B6F8DA1FC26BDE59DB063CF1 /* UdpSocket.cpp in Sources */,
 				E2D96A7EEFDDCFF778B0A209 /* OscOutboundPacketStream.cpp in Sources */,
+				D665D29E29366C41009D00EA /* ofApp.h in Sources */,
 				C5BAFF978392C0B98AD2A771 /* OscPrintReceivedElements.cpp in Sources */,
 				E3B45DDEB6A6E531E9CEC829 /* OscReceivedElements.cpp in Sources */,
 				ACD943C1371F68BFD6682F5F /* OscTypes.cpp in Sources */,
 				8646ED918D7A855F04B49B2A /* ofxOscBundle.cpp in Sources */,
+				D665D2A229366C41009D00EA /* constants.h in Sources */,
 				9532D8DA3D437E37298A3330 /* ofxOscMessage.cpp in Sources */,
 				BF9CDB3D7C2EBC4F54D3AE83 /* ofxOscParameterSync.cpp in Sources */,
 				55738D15A0CC825D4A0A3BE2 /* ofxOscReceiver.cpp in Sources */,
 				62599B23565C5348DADC57E5 /* ofxOscSender.cpp in Sources */,
+				D665D2A129366C41009D00EA /* Particle.h in Sources */,
+				D665D2A029366C41009D00EA /* hand.h in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -992,6 +1000,7 @@
 				INFOPLIST_FILE = "openFrameworks-Info.plist";
 				INSTALL_PATH = /Applications;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				MACOSX_DEPLOYMENT_TARGET = 11.3;
 				OTHER_LDFLAGS = (
 					"$(OF_CORE_LIBS)",
 					"$(OF_CORE_FRAMEWORKS)",
@@ -1114,6 +1123,7 @@
 				INFOPLIST_FILE = "openFrameworks-Info.plist";
 				INSTALL_PATH = /Applications;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				MACOSX_DEPLOYMENT_TARGET = 11.3;
 				OTHER_LDFLAGS = (
 					"$(OF_CORE_LIBS)",
 					"$(OF_CORE_FRAMEWORKS)",
@@ -1152,6 +1162,7 @@
 				INFOPLIST_FILE = "openFrameworks-Info.plist";
 				INSTALL_PATH = /Applications;
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
+				MACOSX_DEPLOYMENT_TARGET = 11.3;
 				OTHER_LDFLAGS = (
 					"$(OF_CORE_LIBS)",
 					"$(OF_CORE_FRAMEWORKS)",

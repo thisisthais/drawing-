@@ -122,6 +122,14 @@ void ofApp::draw(){
     
     ofDrawBitmapString("Number of gestures: " +ofToString(dollar.gestures.size()), 10, ofGetHeight()-25);
     ofDrawBitmapString("Name of current gesture: " +gesture->name, 10, ofGetHeight()-10);
+    
+    for (int i = particles.size() - 1; i >= 0 ; i--) {
+        if (particles.at(i).isDead()) {
+            particles.erase(particles.begin() + i);
+        } else {
+            particles.at(i).run();
+        }
+    }
 }
 
 void ofApp::resetCamOsc(){
@@ -143,6 +151,7 @@ void ofApp::createGesture() {
     // Add all the point we've just drawn to the gesture. This creates a "gesture".
     gesture->reset();
     for(int i = 0; i < line.size(); ++i) {
+        ofLog() << line.size();
         gesture->addPoint(line[i].x, line[i].y);
     }
     
@@ -155,7 +164,7 @@ void ofApp::createGesture() {
         line.clear();
         createNewGesture();
     }
-    showMessage(message, 800);
+    showMessage(message, 3000);
     line.clear();
 }
 
@@ -165,20 +174,25 @@ void ofApp::find() {
     for(int i = 0; i < line.size(); ++i) {
         tmp->addPoint(line[i].x, line[i].y);
     }
-    line.clear();
+//    line.clear();
     double score = 0.0;
     ofxGesture* match = dollar.match(tmp, &score);
     string result = "Matching score: " +ofToString(score);
     if(match != NULL) {
         result +=", which matches with gesture: " +match->name;
         found_gesture.clear();
+        
+        ofPoint centroid = line.getCentroid2D();
+        particles.push_back(Particle(glm::vec2(centroid.x, centroid.y), glm::vec2(0.5, 0.5)));
+        
         float dx = ofGetWidth()/2;
         float dy = ofGetHeight()/2;
         for(int i = 0; i < match->resampled_points.size(); ++i) {
             found_gesture.push_back(ofVec2f(dx+match->resampled_points[i].x, dy+match->resampled_points[i].y));
         }
     }
-    showMessage(result, 1500);
+    line.clear();
+    showMessage(result, 3000);
     delete tmp;
 }
 
@@ -190,9 +204,9 @@ void ofApp::loadFromFile() {
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
-    if (key == 32) { // space bar
+    ofLog() << key;
+    if (key == 116 || key == 102) { // 116 is t for train, 102 is f for find
         ofVec3f fingertip = hand.detections[0][HAND_INDEX3];
-        ofLog() << fingertip;
         if(mode == 0 && fingertip.z > 0.7) { // z is confidence
             float mirrorX = abs(cam.getWidth() - fingertip.x);
             line.addVertex(ofPoint(mirrorX,fingertip.y));
@@ -202,7 +216,15 @@ void ofApp::keyPressed(int key){
 
 //--------------------------------------------------------------
 void ofApp::keyReleased(int key){
-
+    if (key == 116) { // t for train
+        if (line.size() > 0) {
+            createGesture();
+        }
+    }
+    
+    if (key == 102) { // f for find
+        find();
+    }
 }
 
 //--------------------------------------------------------------

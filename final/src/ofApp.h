@@ -5,7 +5,7 @@
 #include "ofxGui.h"
 #include "ofxOsc.h"
 #include "ofxOneDollar.h"
-//#include "SimpleButton.h"
+#include "Particle.h"
 
 #include "constants.h"
 
@@ -40,7 +40,7 @@ class ofApp : public ofBaseApp{
     void loadFromFile();
   
   void resetCamOsc();
-  
+    
   ofVideoGrabber cam;
   HAND hand;
   
@@ -84,4 +84,6 @@ class ofApp : public ofBaseApp{
     int mode;
     string message;
     int hide_message_on;
+    
+    std::vector<Particle> particles;
 };
