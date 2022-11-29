@@ -68,6 +68,7 @@ void ofApp::update(){
       }
         
       sender.sendMessage(m, false);
+        
     }
   }
 
@@ -106,29 +107,19 @@ void ofApp::draw(){
     find_btn.draw();
 
     if(mode == 0) {
-        ofPolyline smoothLine = line.getResampledBySpacing(5).getSmoothed(5);
-        
-//        glColor3f(1.0f, 1.0f, 0.0);
-//        glBegin(GL_LINE_STRIP);
-//        for(int i = 0; i < smoothLine.size(); ++i) {
-//            glVertex2fv(smoothLine[i].getPtr());
-//        }
-//        glEnd();
-        smoothLine.draw();
+        line.draw();
     }
     else if (mode == 1) {
         glColor3f(1.0f, 0.0f, 0.6f);
         ofDrawBitmapString(message, 10, ofGetHeight()-40);
     }
     
-    glColor3f(0.0, 1.0, 0.2);
     glBegin(GL_LINE_STRIP);
     for(int i = 0; i < found_gesture.size(); ++i) {
         glVertex2fv(found_gesture[i].getPtr());
     }
     glEnd();
     
-    glColor3f(1.0f, 1.0f, 0.0f);
     ofDrawBitmapString("Number of gestures: " +ofToString(dollar.gestures.size()), 10, ofGetHeight()-25);
     ofDrawBitmapString("Name of current gesture: " +gesture->name, 10, ofGetHeight()-10);
 }
@@ -201,7 +192,8 @@ void ofApp::loadFromFile() {
 void ofApp::keyPressed(int key){
     if (key == 32) { // space bar
         ofVec3f fingertip = hand.detections[0][HAND_INDEX3];
-        if(mode == 0 && fingertip.z > 0.5) { // z is confidence
+        ofLog() << fingertip;
+        if(mode == 0 && fingertip.z > 0.7) { // z is confidence
             float mirrorX = abs(cam.getWidth() - fingertip.x);
             line.addVertex(ofPoint(mirrorX,fingertip.y));
         }
