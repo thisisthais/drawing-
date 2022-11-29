@@ -12,6 +12,7 @@ Particle::Particle() {
 }
 Particle::Particle(glm::vec2 _location, string _gestureName) {
     location = _location;
+    gestureName = _gestureName;
     lifespan = 150.0;
 }
 
@@ -22,27 +23,33 @@ void Particle::setup() {
 void Particle::update() {
     lifespan = lifespan - 1.0;
     
-    float radius = ofMap(lifespan, 150.0, 0.0, 0.5, 30.0)*5.0;
-    ofPath circle;
-    circle.arc(location, radius, radius, 0, 360);
-    circle.close();
-    circle.arc(location, radius - 2.0, radius - 2.0, 0, 360);
-    circle.setColor(ofColor(ofRandom(130, 255), ofRandom(100), 0, lifespan));
-    circles2.push_back(circle);
-//    float angle = ofRandom(ofDegToRad(360.0));
-//    float distance = ofRandom(100.0);
-//    float xOffset = cos(angle) * distance;
-//    float yOffset = sin(angle) * distance;
-//    circles.push_back(glm::vec3(location.x + xOffset, location.y + yOffset, radius));
-//    colors.push_back(ofColor(ofRandom(130, 255), ofRandom(100), 0, 128));
-    
-//    if (path.size() > 20) {
-//        path.getVertices().erase(path.begin());
-//    }
-//
-//    if (circles.size() > 50) {
-//        circles.erase(circles.begin());
-//    }
+    if (lifespan > 0.0) {
+        float radius = ofMap(lifespan, 150.0, 0.0, 0.5, 30.0)*5.0;
+        ofPath circle;
+        circle.arc(location, radius, radius, 0, 360);
+        circle.close();
+        circle.arc(location, radius - 2.0, radius - 2.0, 0, 360);
+        if (gestureName == "Gesture#1") {
+            circle.setColor(ofColor(ofRandom(130, 255), ofRandom(100), 0, lifespan));
+        } else if (gestureName == "Gesture#2") {
+            circle.setColor(ofColor(ofRandom(100), ofRandom(130, 255), 0, lifespan));
+        } else {
+            circle.setColor(ofColor(ofRandom(50), ofRandom(50), ofRandom(50), lifespan));
+        }
+        
+        circles2.push_back(circle);
+    //    float angle = ofRandom(ofDegToRad(360.0));
+    //    float distance = ofRandom(100.0);
+    //    float xOffset = cos(angle) * distance;
+    //    float yOffset = sin(angle) * distance;
+    //    circles.push_back(glm::vec3(location.x + xOffset, location.y + yOffset, radius));
+    //    colors.push_back(ofColor(ofRandom(130, 255), ofRandom(100), 0, 128));
+        
+    //
+        if (circles.size() > 50) {
+            circles.erase(circles.begin());
+        }
+    }
 }
 
 void Particle::draw() {
@@ -73,5 +80,6 @@ void Particle::run() {
 }
 
 bool Particle::isDead() {
-    return lifespan < 0.0;
+//    return lifespan < 0.0;
+    return false;
 }

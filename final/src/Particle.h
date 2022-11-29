@@ -24,6 +24,7 @@ class Particle {
     std::vector<ofPath> circles2;
     glm::vec2 location;
     float lifespan;
+    string gestureName;
     
     Particle();
     Particle(glm::vec2 _location, string _gestureName);

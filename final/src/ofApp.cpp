@@ -107,6 +107,7 @@ void ofApp::draw(){
     find_btn.draw();
 
     if(mode == 0) {
+        ofPolyline smoothline = line.getSmoothed(5);
         line.draw();
     }
     else if (mode == 1) {
@@ -164,7 +165,7 @@ void ofApp::createGesture() {
         line.clear();
         createNewGesture();
     }
-    showMessage(message, 3000);
+    showMessage(message, 1500);
     line.clear();
 }
 
@@ -183,7 +184,7 @@ void ofApp::find() {
         found_gesture.clear();
         
         ofPoint centroid = line.getCentroid2D();
-        particles.push_back(Particle(glm::vec2(centroid.x, centroid.y), "test"));
+        particles.push_back(Particle(glm::vec2(centroid.x, centroid.y), match->name));
         
         float dx = ofGetWidth()/2;
         float dy = ofGetHeight()/2;
@@ -192,7 +193,7 @@ void ofApp::find() {
         }
     }
     line.clear();
-    showMessage(result, 3000);
+    showMessage(result, 800);
     delete tmp;
 }
 
