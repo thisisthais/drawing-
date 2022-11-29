@@ -60,7 +60,8 @@ void ofApp::update(){
       for (int i = 0; i < hand.n_det; i++){
         m.addFloatArg(hand.scores[i]);
         for (int j = 0; j < HAND_N_PART; j++){
-          m.addFloatArg(hand.detections[i][j].x);
+            float mirrorX = abs(cam.getWidth() - hand.detections[i][j].x);
+          m.addFloatArg(mirrorX);
           m.addFloatArg(hand.detections[i][j].y);
           m.addFloatArg(hand.detections[i][j].z);
         }
@@ -82,14 +83,15 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-  cam.draw(0,0, ofGetWidth(), ofGetHeight());
+  cam.draw(cam.getWidth(),0,-cam.getWidth(),cam.getHeight());
 
   if (do_hand){
     ofPushStyle();
     ofSetColor(0,255,255);
     for (int i = 0; i < hand.n_det; i++){
       for (int j = 0; j < HAND_N_PART; j++){
-        ofDrawCircle(hand.detections[i][j].x, hand.detections[i][j].y, 5);
+          float mirrorX = abs(cam.getWidth() - hand.detections[i][j].x);
+        ofDrawCircle(mirrorX, hand.detections[i][j].y, 5);
       }
     }
     ofPopStyle();
@@ -104,12 +106,15 @@ void ofApp::draw(){
     find_btn.draw();
 
     if(mode == 0) {
-        glColor3f(1.0f, 1.0f, 0.0);
-        glBegin(GL_LINE_STRIP);
-        for(int i = 0; i < line.size(); ++i) {
-            glVertex2fv(line[i].getPtr());
-        }
-        glEnd();
+        ofPolyline smoothLine = line.getResampledBySpacing(5).getSmoothed(5);
+        
+//        glColor3f(1.0f, 1.0f, 0.0);
+//        glBegin(GL_LINE_STRIP);
+//        for(int i = 0; i < smoothLine.size(); ++i) {
+//            glVertex2fv(smoothLine[i].getPtr());
+//        }
+//        glEnd();
+        smoothLine.draw();
     }
     else if (mode == 1) {
         glColor3f(1.0f, 0.0f, 0.6f);
@@ -194,7 +199,13 @@ void ofApp::loadFromFile() {
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
-
+    if (key == 32) { // space bar
+        ofVec3f fingertip = hand.detections[0][HAND_INDEX3];
+        if(mode == 0 && fingertip.z > 0.5) { // z is confidence
+            float mirrorX = abs(cam.getWidth() - fingertip.x);
+            line.addVertex(ofPoint(mirrorX,fingertip.y));
+        }
+    }
 }
 
 //--------------------------------------------------------------
@@ -210,7 +221,7 @@ void ofApp::mouseMoved(int x, int y ){
 //--------------------------------------------------------------
 void ofApp::mouseDragged(int x, int y, int button){
     if(mode == 0) {
-        line.push_back(ofVec2f(x,y));
+        line.addVertex(ofPoint(x, y));
     }
 }
 

@@ -75,7 +75,7 @@ class ofApp : public ofBaseApp{
     ofxButton find_btn;
     ofxButton load_from_file;
     
-    vector<ofVec2f> line;
+    ofPolyline line;
     vector<ofVec2f> found_gesture;
     ofxOneDollar dollar;
     ofxGesture* gesture;
