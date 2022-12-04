@@ -175,7 +175,6 @@ void ofApp::createGesture() {
     // Add all the point we've just drawn to the gesture. This creates a "gesture".
     gesture->reset();
     for(int i = 0; i < line.size(); ++i) {
-        ofLog() << line.size();
         gesture->addPoint(line[i].x, line[i].y);
     }
     
@@ -198,7 +197,7 @@ void ofApp::find() {
     for(int i = 0; i < line.size(); ++i) {
         tmp->addPoint(line[i].x, line[i].y);
     }
-//    line.clear();
+
     double score = 0.0;
     ofxGesture* match = dollar.match(tmp, &score);
     string result = "Matching score: " +ofToString(score);
@@ -222,7 +221,7 @@ void ofApp::find() {
 
 void ofApp::loadFromFile() {
     dollar.load(ofToDataPath("gestures.txt",true));
-    showMessage("Loaded! Note that saved gestures are rotated to the optimal position!",4000);
+    showMessage("Loaded! Note that saved gestures are rotated to the optimal position!",1000);
 }
 
 
@@ -264,7 +263,7 @@ void ofApp::mouseDragged(int x, int y, int button){
 
 //--------------------------------------------------------------
 void ofApp::mousePressed(int x, int y, int button){
-
+    particles.push_back(Particle(glm::vec2(x, y), "Click"));
 }
 
 //--------------------------------------------------------------

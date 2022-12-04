@@ -19,9 +19,10 @@ class Particle {
     void run();
     bool isDead();
     
-    std::vector<glm::vec3> circles;
+    std::vector<ofPath> circles;
     std::vector<ofColor> colors;
-    std::vector<ofPath> circles2;
+    std::vector<ofPoint> points;
+    ofPath path;
     glm::vec2 location;
     float lifespan;
     string gestureName;

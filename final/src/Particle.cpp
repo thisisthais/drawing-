@@ -14,15 +14,49 @@ Particle::Particle(glm::vec2 _location, string _gestureName) {
     location = _location;
     gestureName = _gestureName;
     lifespan = 150.0;
+    setup();
 }
 
 void Particle::setup() {
+    // setup circle drawing
+    int scale = 50;
+    float resolution = 0.003;
+    int numPoints = 100;
+    int radius = 160;
+    int numRings = 20;
+    
+    path.setFilled(false);
+    path.setStrokeWidth(2);
+    path.setStrokeColor(ofColor::black);
+    
+    for (int r = 0; r < radius; r+= radius/numRings) {
+        for(float a = 0.0; a<2*PI; a+=2*PI/numPoints){
+            float x = location.x + r*cos(a);
+            float y = location.y + r*sin(a);
+            float xNoise = ofMap(ofSignedNoise(x*resolution), -1, 1, -scale, scale);
+            float yNoise = ofMap(ofSignedNoise(y*resolution), -1, 1, -scale, scale);
+
+//            path.arc(glm::vec2(x+xNoise,y+yNoise), 100, 100, a, a + 2*PI/numPoints);
+            
+            if (a == 0.0) {
+                path.moveTo(glm::vec2(x+xNoise,y+yNoise));
+            } else {
+                if(ofRandom(0.0, 1.0)>0.8){
+                    path.moveTo(glm::vec2(x+xNoise,y+yNoise));
+                } else {
+                    path.curveTo(glm::vec2(x+xNoise,y+yNoise));
+                }
+            }
+            
+        }
+        
+//        path.close();
+    }
     
 }
 
 void Particle::update() {
     lifespan = lifespan - 1.0;
-    
     if (lifespan > 0.0) {
         float radius = ofMap(lifespan, 150.0, 0.0, 0.5, 30.0)*5.0;
         ofPath circle;
@@ -37,41 +71,33 @@ void Particle::update() {
             circle.setColor(ofColor(ofRandom(50), ofRandom(50), ofRandom(50), lifespan));
         }
         
-        circles2.push_back(circle);
-    //    float angle = ofRandom(ofDegToRad(360.0));
-    //    float distance = ofRandom(100.0);
-    //    float xOffset = cos(angle) * distance;
-    //    float yOffset = sin(angle) * distance;
-    //    circles.push_back(glm::vec3(location.x + xOffset, location.y + yOffset, radius));
-    //    colors.push_back(ofColor(ofRandom(130, 255), ofRandom(100), 0, 128));
-        
-    //
-        if (circles.size() > 50) {
-            circles.erase(circles.begin());
-        }
+        circles.push_back(circle);
+
+//        if (circles.size() > 50) {
+//            circles.erase(circles.begin());
+//        }
     }
 }
 
 void Particle::draw() {
+    ofPushStyle();
     if (!isDead()) {
-        ofPushStyle();
+        
         ofEnableAlphaBlending();
-//        ofSetColor(255, 69, 0, lifespan);
-//        ofDrawCircle(location.x, location.y, 10);
-//        for (int i = 0; i < circles.size(); i++) {
-//            ofSetColor(colors.at(i));
-//            ofDrawCircle(circles.at(i).x, circles.at(i).y, circles.at(i).z);
+        
+//        ofSetColor(ofColor(0, 0, 0, 255));
+//        for (int i = 0; i < points.size(); i++) {
+//            ofDrawCircle(points.at(i).x, points.at(i).y, 4.0);
 //        }
-        for (int i = 0; i < circles2.size(); i++) {
-            circles2.at(i).draw();
-        }
+        
+        path.draw();
         ofDisableAlphaBlending();
         
-//        ofSetColor(ofColor::purple);
-//        path.draw();
-        
-        ofPopStyle();
+       
     }
+    
+    
+    ofPopStyle();
 }
 
 void Particle::run() {

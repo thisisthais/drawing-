@@ -4,6 +4,10 @@
 <dict>
 	<key>files</key>
 	<dict>
+		<key>Resources/gestures.txt</key>
+		<data>
+		wNSqav5ouh7bnxAiI69S+qRot48=
+		</data>
 		<key>Resources/icon-debug.icns</key>
 		<data>
 		PK/FgaLxSEW4pVQhtgMTghsTUq4=
@@ -19,6 +23,13 @@
 			</data>
 			<key>requirement</key>
 			<string>cdhash H"e3276b4137929f92d669c16618ef892678c6347f" or cdhash H"23a6c033b3fc1f5d8a084c2525c33ef5e3085b3d" or cdhash H"f2f96194a8afb6c80b7bbcff6d772c85237f216d" or cdhash H"1ccd24a42ff045f56cca12302b49abc6b549eb40"</string>
+		</dict>
+		<key>Resources/gestures.txt</key>
+		<dict>
+			<key>hash2</key>
+			<data>
+			yWukVUbUPXUHeWgThWRSAPCOHEZJIWBjAVowTd+GcqY=
+			</data>
 		</dict>
 		<key>Resources/icon-debug.icns</key>
 		<dict>
