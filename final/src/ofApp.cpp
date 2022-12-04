@@ -148,11 +148,13 @@ void ofApp::draw(){
     ofDrawBitmapString("Name of current gesture: " +gesture->name, 10, ofGetHeight()-10);
     
     for (int i = particles.size() - 1; i >= 0 ; i--) {
-        if (particles.at(i).isDead()) {
-            particles.erase(particles.begin() + i);
-        } else {
-            particles.at(i).run();
-        }
+//        if (particles.at(i).isDone()) {
+//            particles.erase(particles.begin() + i);
+//        } else {
+//            particles.at(i).run();
+//        }
+        
+        particles.at(i).run();
     }
 }
 

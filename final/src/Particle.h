@@ -17,14 +17,13 @@ class Particle {
     void update();
     void draw();
     void run();
-    bool isDead();
+    bool isDone();
     
     std::vector<ofPath> circles;
     std::vector<ofColor> colors;
-    std::vector<ofPoint> points;
     ofPath path;
     glm::vec2 location;
-    float lifespan;
+    int lifespan;
     string gestureName;
     
     Particle();
