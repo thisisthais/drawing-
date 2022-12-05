@@ -23,7 +23,7 @@ class Particle {
     std::vector<ofColor> colors;
     ofPath path;
     glm::vec2 location;
-    int lifespan;
+    float lifespan;
     string gestureName;
     
     Particle();

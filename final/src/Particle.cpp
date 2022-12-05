@@ -13,7 +13,7 @@ Particle::Particle() {
 Particle::Particle(glm::vec2 _location, string _gestureName) {
     location = _location;
     gestureName = _gestureName;
-    lifespan = 160;
+    lifespan = 160.0;
     setup();
 }
 
@@ -57,12 +57,8 @@ void Particle::setup() {
 }
 
 void Particle::update() {
-    if (lifespan > 0) {
-        lifespan = lifespan - 1;
-        
-        float pathPercentage = ofMap(lifespan, 160, 0, 0.0, 1.0);
-//        vector<Command> commands = path.getCommands();
-//        ofLog() << commands.size();
+    if (lifespan > 0.0) {
+        lifespan = lifespan - 0.9*ofGetElapsedTimef();
     }
 }
 
@@ -71,7 +67,24 @@ void Particle::draw() {
     
     ofEnableAlphaBlending();
     
-    path.draw();
+//    path.draw();
+    
+    vector<ofPolyline> lines = path.getOutline();
+    
+    // draws each line based on pct
+    
+    for (int i = 0; i < lines.size(); i++){
+        float pct = ofMap(lifespan, 160.0, 0.0, 0.0, 1.0, true);
+        ofLog() << pct;
+        ofPolyline newLine;
+        for (int j = 0; j < lines[i].size(); j++){
+            float pctj = ofMap(j, 0, lines[i].size()-1, 0, 1);
+            if (pctj < pct){
+                newLine.addVertex(lines[i][j]);
+            }
+        }
+        newLine.draw();
+    }
     
     ofDisableAlphaBlending();
     

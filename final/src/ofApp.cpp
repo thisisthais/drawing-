@@ -210,11 +210,11 @@ void ofApp::find() {
         ofPoint centroid = line.getCentroid2D();
         particles.push_back(Particle(glm::vec2(centroid.x, centroid.y), match->name));
         
-        float dx = ofGetWidth()/2;
-        float dy = ofGetHeight()/2;
-        for(int i = 0; i < match->resampled_points.size(); ++i) {
-            found_gesture.push_back(ofVec2f(dx+match->resampled_points[i].x, dy+match->resampled_points[i].y));
-        }
+//        float dx = ofGetWidth()/2;
+//        float dy = ofGetHeight()/2;
+//        for(int i = 0; i < match->resampled_points.size(); ++i) {
+//            found_gesture.push_back(ofVec2f(dx+match->resampled_points[i].x, dy+match->resampled_points[i].y));
+//        }
     }
     line.clear();
     showMessage(result, 800);
@@ -300,7 +300,7 @@ void ofApp::dragEvent(ofDragInfo dragInfo){
 
 void ofApp::showMessage(string sMessage, int nDelay) {
     message = sMessage;
-    mode = 1;
+//    mode = 1;
     hide_message_on = ofGetElapsedTimeMillis() + nDelay;
 }
 
