@@ -31,21 +31,29 @@ void Particle::setup() {
     
     for (int r = 0; r < radius; r+= radius/numRings) {
         path.newSubPath();
-        for(float a = 0.0; a<=2*PI; a+=2*PI/numPoints){
+        bool bFirstPoint = true;
+        for(int i = 0; i <= numPoints; i++){
+            float a = ofMap(i, 0, numPoints-1, 0, TWO_PI);
+
             float x = location.x + r*cos(a);
             float y = location.y + r*sin(a);
             float xNoise = ofMap(ofSignedNoise(x*resolution), -1, 1, -scale, scale);
             float yNoise = ofMap(ofSignedNoise(y*resolution), -1, 1, -scale, scale);
 
-            path.curveTo(glm::vec2(x+xNoise,y+yNoise));
-            
+            if (bFirstPoint == true){
+                bFirstPoint = false;
+                path.moveTo(glm::vec2(x+xNoise,y+yNoise));
+            } else {
+                path.curveTo(glm::vec2(x+xNoise,y+yNoise));
+            }
+
+
             if(ofRandom(0.0, 1.0)>0.75-0.25*sin(r)){
                 path.newSubPath();
                 path.moveTo(glm::vec2(x+xNoise,y+yNoise));
             }
         }
-        path.newSubPath();
-    }
+   }
 }
 
 void Particle::update() {
