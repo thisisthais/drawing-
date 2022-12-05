@@ -22,12 +22,18 @@ class Particle {
     std::vector<ofPath> circles;
     std::vector<ofColor> colors;
     ofPath path;
+    ofPath background;
     glm::vec2 location;
     float lifespan;
+    float size;
+    float matchWidth;
+    float matchHeight;
+    ofPolyline matchLine;
+    
     string gestureName;
     
     Particle();
-    Particle(glm::vec2 _location, string _gestureName);
+    Particle(ofPolyline _matchLine, string _gestureName);
     
     private:
 };

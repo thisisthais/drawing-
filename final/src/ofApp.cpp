@@ -6,11 +6,11 @@ void ofApp::setup(){
   
   gui.setup("", "settings.xml");
   
-  gui.add(osc_group);
-  gui.add(cam_group);
-  gui.add(btn_reset.setup("Apply OSC/Cam Settings"));
-  btn_reset.addListener(this, &ofApp::resetCamOsc);
-  gui.add(do_group);
+//  gui.add(osc_group);
+//  gui.add(cam_group);
+//  gui.add(btn_reset.setup("Apply OSC/Cam Settings"));
+//  btn_reset.addListener(this, &ofApp::resetCamOsc);
+//  gui.add(do_group);
     gui.add(save_to_file.setup("Save To File"));
     save_to_file.addListener(this, &ofApp::saveToFile);
     gui.add(clear_line.setup("Clear Line"));
@@ -100,11 +100,11 @@ void ofApp::draw(){
   
   gui.draw();
     
-    save_to_file.draw();
-    load_from_file.draw();
-    clear_line.draw();
-    create_gesture.draw();
-    find_btn.draw();
+//    save_to_file.draw();
+//    load_from_file.draw();
+//    clear_line.draw();
+//    create_gesture.draw();
+//    find_btn.draw();
 
     if(mode == 0) {
         ofPolyline smoothline = line.getSmoothed(2);
@@ -206,9 +206,7 @@ void ofApp::find() {
     if(match != NULL) {
         result +=", which matches with gesture: " +match->name;
         found_gesture.clear();
-        
-        ofPoint centroid = line.getCentroid2D();
-        particles.push_back(Particle(glm::vec2(centroid.x, centroid.y), match->name));
+        particles.push_back(Particle(line, match->name));
         
 //        float dx = ofGetWidth()/2;
 //        float dy = ofGetHeight()/2;
@@ -265,7 +263,7 @@ void ofApp::mouseDragged(int x, int y, int button){
 
 //--------------------------------------------------------------
 void ofApp::mousePressed(int x, int y, int button){
-    particles.push_back(Particle(glm::vec2(x, y), "Click"));
+//    particles.push_back(Particle(glm::vec2(x, y), "Click", 160.0));
 }
 
 //--------------------------------------------------------------
