@@ -11,19 +11,13 @@ Particle::Particle() {
     
 }
 Particle::Particle(ofPolyline _matchLine, string _gestureName) {
-    if (_gestureName == "Gesture#2") {
-//        _matchLine.scale(-1, 1);
-        // was having issues with lines drawn counterclockwise but couldn't figure out how to mirror
-        // ended making suqares and circles clockwise in the gesture trainer even if the error margin is greater this way
-    }
     location = _matchLine.getCentroid2D();
-    size = sqrt(_matchLine.getArea());
+    size = sqrt(abs(_matchLine.getArea()));
     matchWidth = _matchLine.getBoundingBox().getWidth();
     matchHeight = _matchLine.getBoundingBox().getHeight();
     gestureName = _gestureName;
     lifespan = 160.0;
     
-    ofLog() << _gestureName;
     setup();
 }
 
