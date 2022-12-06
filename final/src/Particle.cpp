@@ -38,7 +38,7 @@ void Particle::setup() {
     background.setCircleResolution(32);
     
     bgColor = colors[(int)ofRandom(colors.size())];
-//    bgColor.a = 0;
+    bgColor.a = 0;
     
     background.setColor(bgColor);
     
@@ -154,13 +154,10 @@ void Particle::update() {
     if (lifespan > 0.0) {
         lifespan = lifespan - 0.5*ofGetElapsedTimef();
         float bgColorAlpha = MIN(ofMap(lifespan, 160, 0, 0, 255), 255);
-//        bgColor.a = bgColorAlpha;
+        bgColor.a = bgColorAlpha;
     }
     
-//    bgColor = colors[(int)ofRandom(colors.size())];
-//    background.setColor(bgColor);
-    ofLog() << "update";
-    ofLog() << this->bgColor;
+    background.setColor(bgColor);
 }
 
 void Particle::draw() {
@@ -194,13 +191,9 @@ void Particle::draw() {
 }
 
 void Particle::changeColor() {
-    ofLog() << "change";
     int r = (int)ofRandom(colors.size());
     this->bgColor = colors[r];
     this->background.setColor(this->bgColor);
-//    bgColor.a = 0;
-//    lifespan = 160.0;
-    ofLog() << this->bgColor;
 }
 
 void Particle::run() {

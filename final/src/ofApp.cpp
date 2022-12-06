@@ -241,7 +241,8 @@ void ofApp::keyPressed(int key){
     }
     
     if (key == 99) { // c for color
-        lastParticle.changeColor();
+//        lastParticle->changeColor();
+        particles.at(particles.size() - 1).changeColor();
     }
 }
 
