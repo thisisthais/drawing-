@@ -29,6 +29,7 @@ class Particle {
     float matchWidth;
     float matchHeight;
     ofPolyline matchLine;
+    ofColor bgColor;
     
     string gestureName;
     

@@ -268,7 +268,7 @@ void ofApp::mousePressed(int x, int y, int button){
 
 //--------------------------------------------------------------
 void ofApp::mouseReleased(int x, int y, int button){
-    particles.push_back(Particle(line, "Gesture#2"));
+    particles.push_back(Particle(line, "Gesture#3"));
     line.clear();
 }
 

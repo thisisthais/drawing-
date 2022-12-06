@@ -18,6 +18,16 @@ Particle::Particle(ofPolyline _matchLine, string _gestureName) {
     gestureName = _gestureName;
     lifespan = 160.0;
     
+    if (_gestureName == "Gesture#1") {
+        bgColor = ofColor::darkSeaGreen;
+    } else if (_gestureName == "Gesture#2") {
+        bgColor = ofColor::sandyBrown;
+    } else {
+        bgColor = ofColor::white;
+    }
+    
+    bgColor.a = 0;
+    
     setup();
 }
 
@@ -27,8 +37,8 @@ void Particle::setup() {
     path.setStrokeColor(ofColor::black);
     
     background.setFilled(true);
-    background.setColor(ofColor(143, 188, 143, 0));
     background.setCircleResolution(32);
+    background.setColor(bgColor);
     
     if (gestureName == "Gesture#1") {
         // setup circle drawing
@@ -40,8 +50,6 @@ void Particle::setup() {
         
         matchWidth = MIN(matchWidth, 150.0);
         matchHeight = MIN(matchHeight, 150.0);
-        
-        background.setColor(ofColor(143, 188, 143, 0));
         
         for (int r = 0; r <= radius; r+= radius/numRings) {
             path.newSubPath();
@@ -84,11 +92,10 @@ void Particle::setup() {
         }
         
         background.ellipse(backgroundLocation, boundingBox.width, boundingBox.height);
+        
     } else if (gestureName == "Gesture#2") {
         float scale = CLAMP(size/ 20.0, 10.0, 20.0);
         float resolution = 0.005;
-        
-        background.setColor(ofColor(244, 164, 96, 0));
         
         for (int i = 0; i < matchWidth; i+=30) {
             float x = ofMap(i, 0, matchWidth - 1, location.x - matchWidth/2, location.x + matchWidth/2, true);
@@ -111,7 +118,32 @@ void Particle::setup() {
         path.rotateDeg(randRotate, location);
         background.rotateDeg(randRotate, location);
     } else {
+        int scale = 50;
+        float resolution = 0.04;
+        int numPoints = 20;
+        int radius = 0.7*size*matchWidth/200.0;
         
+        matchWidth = MIN(matchWidth, 150.0);
+        matchHeight = MIN(matchHeight, 150.0);
+         
+        path.circle(location, 20.0);
+        
+        
+        // Figure out the background ellipse shape
+        glm::vec2 backgroundLocation = location + glm::vec2(ofRandom(-10.0, 10.0), ofRandom(-10.0, 10.0));
+        
+        ofRectangle boundingBox;
+        vector<ofPolyline> outlines = path.getOutline();
+        for (int i = 0; i < outlines.size(); i++) {
+            ofRectangle b = outlines.at(i).getBoundingBox();
+            if (i == 0) {
+                boundingBox = b;
+            } else {
+                boundingBox.growToInclude(b);
+            }
+        }
+        
+        background.ellipse(backgroundLocation, boundingBox.width, boundingBox.height);
     }
     
 }
@@ -120,12 +152,8 @@ void Particle::update() {
     if (lifespan > 0.0) {
         lifespan = lifespan - 0.5*ofGetElapsedTimef();
         float bgColorAlpha = MIN(ofMap(lifespan, 160, 0, 0, 255), 255);
-        
-        if (gestureName == "Gesture#1") {
-            background.setColor(ofColor(143, 188, 143, bgColorAlpha));
-        } else {
-            background.setColor(ofColor(244, 164, 96, bgColorAlpha));
-        }
+        bgColor.a = bgColorAlpha;
+        background.setColor(bgColor);
     }
 }
 
