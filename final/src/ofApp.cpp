@@ -206,7 +206,8 @@ void ofApp::find() {
     if(match != NULL) {
         result +=", which matches with gesture: " +match->name;
         found_gesture.clear();
-        particles.push_back(Particle(line, match->name));
+        lastParticle = Particle(line, match->name);
+        particles.push_back(lastParticle);
         
 //        float dx = ofGetWidth()/2;
 //        float dy = ofGetHeight()/2;
@@ -234,6 +235,14 @@ void ofApp::keyPressed(int key){
             line.addVertex(ofPoint(mirrorX,fingertip.y));
         }
     }
+    
+    if (key == 114) { // r for reset
+        
+    }
+    
+    if (key == 99) { // c for color
+        lastParticle.changeColor();
+    }
 }
 
 //--------------------------------------------------------------
@@ -247,6 +256,7 @@ void ofApp::keyReleased(int key){
     if (key == 102) { // f for find
         find();
     }
+    
 }
 
 //--------------------------------------------------------------

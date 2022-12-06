@@ -18,9 +18,9 @@ class Particle {
     void draw();
     void run();
     bool isDone();
+    void changeColor();
     
     std::vector<ofPath> circles;
-    std::vector<ofColor> colors;
     ofPath path;
     ofPath background;
     glm::vec2 location;
@@ -30,6 +30,8 @@ class Particle {
     float matchHeight;
     ofPolyline matchLine;
     ofColor bgColor;
+    ofColor lineColor;
+    std::array<ofColor, 5> colors;
     
     string gestureName;
     

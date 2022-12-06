@@ -86,4 +86,5 @@ class ofApp : public ofBaseApp{
     int hide_message_on;
     
     std::vector<Particle> particles;
+    Particle lastParticle;
 };

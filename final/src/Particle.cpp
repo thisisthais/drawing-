@@ -18,15 +18,13 @@ Particle::Particle(ofPolyline _matchLine, string _gestureName) {
     gestureName = _gestureName;
     lifespan = 160.0;
     
-    if (_gestureName == "Gesture#1") {
-        bgColor = ofColor::darkSeaGreen;
-    } else if (_gestureName == "Gesture#2") {
-        bgColor = ofColor::sandyBrown;
-    } else {
-        bgColor = ofColor::white;
-    }
-    
-    bgColor.a = 0;
+    colors = {
+        ofColor::cadetBlue,
+        ofColor::chocolate,
+        ofColor::cornflowerBlue,
+        ofColor::darkorange,
+        ofColor::darkSeaGreen
+    };
     
     setup();
 }
@@ -38,6 +36,10 @@ void Particle::setup() {
     
     background.setFilled(true);
     background.setCircleResolution(32);
+    
+    bgColor = colors[(int)ofRandom(colors.size())];
+    bgColor.a = 0;
+    
     background.setColor(bgColor);
     
     if (gestureName == "Gesture#1") {
@@ -153,8 +155,9 @@ void Particle::update() {
         lifespan = lifespan - 0.5*ofGetElapsedTimef();
         float bgColorAlpha = MIN(ofMap(lifespan, 160, 0, 0, 255), 255);
         bgColor.a = bgColorAlpha;
-        background.setColor(bgColor);
     }
+    
+    background.setColor(bgColor);
 }
 
 void Particle::draw() {
@@ -185,6 +188,16 @@ void Particle::draw() {
     ofDisableAlphaBlending();
     
     ofPopStyle();
+}
+
+void Particle::changeColor() {
+    ofLog() << "change";
+    int r = (int)ofRandom(colors.size());
+    bgColor = colors[r];
+    background.setColor(bgColor);
+//    bgColor.a = 0;
+//    lifespan = 160.0;
+    ofLog() << bgColor;
 }
 
 void Particle::run() {
