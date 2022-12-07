@@ -31,7 +31,7 @@ class Particle {
     ofPolyline matchLine;
     ofColor bgColor;
     ofColor lineColor;
-    std::array<ofColor, 5> colors;
+    std::array<ofColor, 50> colors;
     
     string gestureName;
     

@@ -92,6 +92,10 @@ void ofApp::draw(){
         cam.draw(cam.getWidth(),0,-cam.getWidth(),cam.getHeight());
     }
     ofPopStyle();
+    
+    for (int i = 0; i < particles.size() ; i++) {
+        particles.at(i).run();
+    }
 
   if (do_hand){
     ofPushStyle();
@@ -154,15 +158,6 @@ void ofApp::draw(){
     ofDrawBitmapString("Number of gestures: " +ofToString(dollar.gestures.size()), 10, ofGetHeight()-25);
     ofDrawBitmapString("Name of current gesture: " +gesture->name, 10, ofGetHeight()-10);
     
-    for (int i = particles.size() - 1; i >= 0 ; i--) {
-//        if (particles.at(i).isDone()) {
-//            particles.erase(particles.begin() + i);
-//        } else {
-//            particles.at(i).run();
-//        }
-        
-        particles.at(i).run();
-    }
 }
 
 void ofApp::resetCamOsc(){
