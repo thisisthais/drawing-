@@ -222,9 +222,73 @@ void Particle::setup() {
             background.curveTo(bgX, bgY);
             background.close();
 //        }
+    } else if (gestureName == "Gesture#4") {
+//        background.circle(location.x, location.y, 20.0);
+        
+        location.y -= matchHeight/2;
+        ofPoint start(location);
+        
+        // define the parameters of the spiral
+          float angle = PI;   // initial angle of the spiral
+          float delta = 0.1; // increment of the angle at each step
+          float speed = 1;   // rate at which the spiral grows
+        float downwards = 0;
+        float length = CLAMP(20.0, matchHeight, 200.0);
+        float radius = ofMap(length, 1.0, ofGetHeight(), 10.0, 60.0); // initial radius of the spiral
+        float scale = 20.0;
+        float resolution = 0.005;
+        
+        if (ofRandom(1.0) >= 0.5) {
+            delta *= -1.0;
+        }
+        // draw the spiral
+        while (downwards < length) {
+          // update the radius and angle of the spiral
+//          radius += speed;
+          angle += delta;
+            downwards += speed;
+
+          // calculate the next point on the spiral
+          ofPoint next(start.x + radius * cos(angle), start.y + downwards + radius*0.8 * sin(angle));
+          path.curveTo(next); // draw a line from the current position to the next point
+            
+            if ((int)downwards % 4 == 0) {
+                background.lineTo(next);
+            }
+        }
+        
+        path.close();
+        background.close();
+        background.translate(glm::vec2(ofRandom(-5.0, 5.0), ofRandom(-5.0, 5.0)));
     } else {
-        path.circle(location.x, location.y, 20.0);
-        background.circle(location.x, location.y, 20.0);
+        ofPoint start(location);
+        
+        // define the parameters of the spiral
+          float angle = PI;   // initial angle of the spiral
+          float delta = 0.1; // increment of the angle at each step
+          float speed = 1;   // rate at which the spiral grows
+        float downwards = 0;
+        float length = CLAMP(20.0, matchHeight, 200.0);
+        float radius = 200.0/length; // initial radius of the spiral
+        float scale = 20.0;
+        float resolution = 0.005;
+        
+        if (ofRandom(1.0) >= 0.5) {
+            delta *= -1.0;
+        }
+        // draw the spiral
+        while (downwards < length) {
+          // update the radius and angle of the spiral
+//          radius += speed;
+          angle += delta;
+            downwards += speed;
+
+          // calculate the next point on the spiral
+          ofPoint next(start.x + radius * cos(angle), start.y + downwards + radius*0.8 * sin(angle));
+          path.lineTo(next); // draw a line from the current position to the next point
+        }
+        
+        path.close();
     }
     
 }
