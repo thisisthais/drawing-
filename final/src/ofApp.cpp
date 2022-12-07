@@ -283,7 +283,7 @@ void ofApp::mouseDragged(int x, int y, int button){
 
 //--------------------------------------------------------------
 void ofApp::mousePressed(int x, int y, int button){
-//    particles.push_back(Particle(glm::vec2(x, y), "Click", 160.0));
+
 }
 
 //--------------------------------------------------------------

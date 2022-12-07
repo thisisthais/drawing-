@@ -119,33 +119,67 @@ void Particle::setup() {
         float randRotate = ofRandom(-20.0, 20.0);
         path.rotateDeg(randRotate, location);
         background.rotateDeg(randRotate, location);
-    } else {
-        int scale = 50;
-        float resolution = 0.04;
-        int numPoints = 20;
-        int radius = 0.7*size*matchWidth/200.0;
+    } else if (gestureName == "Gesture#3"){
         
-        matchWidth = MIN(matchWidth, 150.0);
-        matchHeight = MIN(matchHeight, 150.0);
-         
-        path.circle(location, 20.0);
+        int nTips = 4 + ofRandom(1, 12);
+        int nStarPts = nTips * 2;
+        float angleChangePerPt = TWO_PI / (float)nStarPts;
+        float innerRadius = size/5.0;
+        float outerRadius = innerRadius + 30;
+        glm::vec2 bgNoise = glm::vec2(ofRandom(-5.0, 5.0), ofRandom(-5.0, 5.0));
         
+        float angle = 0;
         
-        // Figure out the background ellipse shape
-        glm::vec2 backgroundLocation = location + glm::vec2(ofRandom(-10.0, 10.0), ofRandom(-10.0, 10.0));
-        
-        ofRectangle boundingBox;
-        vector<ofPolyline> outlines = path.getOutline();
-        for (int i = 0; i < outlines.size(); i++) {
-            ofRectangle b = outlines.at(i).getBoundingBox();
-            if (i == 0) {
-                boundingBox = b;
-            } else {
-                boundingBox.growToInclude(b);
+//        for (int j = 0; j < 3; j++) {
+//            float xNoise = ofRandom(j*outerRadius*1.2, j*outerRadius*2.0);
+//            if (ofRandom(1.0) >= 0.5) {
+//                xNoise *= -1.0;
+//            }
+//            float yNoise = ofRandom(j*outerRadius*1.2, j*outerRadius*2.0);
+//            if (ofRandom(1.0) >= 0.5) {
+//                xNoise *= -1.0;
+//            }
+        float origx = location.x;
+        float origy = location.y;
+        glm::vec2 bgOrig = location + bgNoise;
+            
+            for (int i = 0; i <= nStarPts; i++){
+                if (i % 2 == 0) {
+                    // inside point:
+                    float x = origx + innerRadius * cos(angle);
+                    float y = origy + innerRadius * sin(angle);
+                    path.curveTo(x,y);
+                    
+                    float bgX = bgOrig.x + innerRadius * cos(angle);
+                    float bgY = bgOrig.y + innerRadius * sin(angle);
+                    background.curveTo(bgX, bgY);
+                } else {
+                    // outside point
+                    float x = origx + outerRadius * cos(angle);
+                    float y = origy + outerRadius * sin(angle);
+                    path.curveTo(x,y);
+                    
+                    float bgX = bgOrig.x + outerRadius * cos(angle);
+                    float bgY = bgOrig.y + outerRadius * sin(angle);
+                    background.curveTo(bgX, bgY);
+                }
+                angle += angleChangePerPt;
             }
-        }
+            
+            //starting point
+            float x = origx + innerRadius * cos(0);
+            float y = origy + innerRadius * sin(0);
+            path.curveTo(x, y);
+            path.close();
         
-        background.ellipse(backgroundLocation, boundingBox.width, boundingBox.height);
+            float bgX = bgOrig.x + innerRadius * cos(0);
+            float bgY = bgOrig.y + innerRadius * sin(0);
+            background.curveTo(bgX, bgY);
+            background.close();
+//        }
+    } else {
+        path.circle(location.x, location.y, 20.0);
+        background.circle(location.x, location.y, 20.0);
     }
     
 }
@@ -170,7 +204,6 @@ void Particle::draw() {
 //    path.draw();
     
     vector<ofPolyline> lines = path.getOutline();
-    
     // draws each line based on pct
     ofSetColor(ofColor::black);
     for (int i = 0; i < lines.size(); i++){
