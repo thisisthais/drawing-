@@ -114,28 +114,28 @@ void ofApp::draw(){
 //    find_btn.draw();
 
     if(mode == 0) {
-        ofPolyline smoothline = line.getSmoothed(2);
+        ofPolyline smoothline = line.getSmoothed(3);
         smoothline.draw();
         
         ofMesh mesh;
         mesh.setMode(OF_PRIMITIVE_TRIANGLE_STRIP);
         
-        for (int i = 0; i < line.size(); i++){
+        for (int i = 0; i < smoothline.size(); i++){
             
             int i_m_1 = i-1;
             int i_p_1 = i+1;
             if (i_m_1 < 0) i_m_1 = 0;
-            if (i_p_1 == line.size()) i_p_1 = line.size()-1;
-            ofPoint a = line[i_m_1];
-            ofPoint b = line[i];
-            ofPoint c = line[i_p_1];
+            if (i_p_1 == smoothline.size()) i_p_1 = smoothline.size()-1;
+            ofPoint a = smoothline[i_m_1];
+            ofPoint b = smoothline[i];
+            ofPoint c = smoothline[i_p_1];
             ofPoint diff  = (c-a).getNormalized();
             diff = diff.getRotated(90, ofPoint(0, 0, 1));
             
-            mesh.addVertex(b + diff*5);
-            mesh.addVertex(b - diff*5);
-            mesh.addColor(ofColor::white);
-            mesh.addColor(ofColor::black);
+            mesh.addVertex(b + diff*3);
+            mesh.addVertex(b - diff*3);
+            mesh.addColor(ofColor::blueViolet);
+            mesh.addColor(ofColor::blueViolet);
             
         }
         mesh.draw();
@@ -183,8 +183,9 @@ void ofApp::clearLine() {
 void ofApp::createGesture() {
     // Add all the point we've just drawn to the gesture. This creates a "gesture".
     gesture->reset();
-    for(int i = 0; i < line.size(); ++i) {
-        gesture->addPoint(line[i].x, line[i].y);
+    ofPolyline smoothLine = line.getSmoothed(2);
+    for(int i = 0; i < smoothLine.size(); ++i) {
+        gesture->addPoint(smoothLine[i].x, smoothLine[i].y);
     }
     
     if(gesture->points.size() <= 10) {
@@ -203,8 +204,9 @@ void ofApp::createGesture() {
 void ofApp::find() {
     // find the gesture which matches the current line.
     ofxGesture* tmp = new ofxGesture();
-    for(int i = 0; i < line.size(); ++i) {
-        tmp->addPoint(line[i].x, line[i].y);
+    ofPolyline smoothLine = line.getSmoothed(2);
+    for(int i = 0; i < smoothLine.size(); ++i) {
+        tmp->addPoint(smoothLine[i].x, smoothLine[i].y);
     }
 
     double score = 0.0;
@@ -213,7 +215,7 @@ void ofApp::find() {
     if(match != NULL) {
         result +=", which matches with gesture: " +match->name;
         found_gesture.clear();
-        lastParticle = Particle(line, match->name);
+        lastParticle = Particle(smoothLine, match->name);
         particles.push_back(lastParticle);
         
 //        float dx = ofGetWidth()/2;
