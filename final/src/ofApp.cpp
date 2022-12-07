@@ -84,7 +84,14 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-  cam.draw(cam.getWidth(),0,-cam.getWidth(),cam.getHeight());
+    ofPushStyle();
+    if (particles.size() > 0) {
+        ofSetColor(ofColor::antiqueWhite);
+        ofDrawRectangle(0,0, ofGetWidth(), ofGetHeight());
+    } else {
+        cam.draw(cam.getWidth(),0,-cam.getWidth(),cam.getHeight());
+    }
+    ofPopStyle();
 
   if (do_hand){
     ofPushStyle();
