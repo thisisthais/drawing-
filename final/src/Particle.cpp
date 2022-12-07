@@ -169,7 +169,7 @@ void Particle::setup() {
         int nTips = 4 + ofRandom(1, 12);
         int nStarPts = nTips * 2;
         float angleChangePerPt = TWO_PI / (float)nStarPts;
-        float innerRadius = size/5.0;
+        float innerRadius = matchWidth/4.0;
         float outerRadius = innerRadius + 30;
         glm::vec2 bgNoise = glm::vec2(ofRandom(-5.0, 5.0), ofRandom(-5.0, 5.0));
         
@@ -232,7 +232,7 @@ void Particle::setup() {
 void Particle::update() {
     if (lifespan > 0.0) {
         lifespan = lifespan - 0.5*ofGetElapsedTimef();
-        float bgColorAlpha = MIN(ofMap(lifespan, 160, 0, 0, 255), 255);
+        float bgColorAlpha = MIN(ofMap(lifespan, 160, 0, 0, 150), 150);
         bgColor.a = bgColorAlpha;
     }
     

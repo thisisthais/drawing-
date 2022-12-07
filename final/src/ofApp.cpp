@@ -109,7 +109,7 @@ void ofApp::draw(){
     ofPopStyle();
   }
   
-  gui.draw();
+//  gui.draw();
     
 //    save_to_file.draw();
 //    load_from_file.draw();
@@ -155,8 +155,8 @@ void ofApp::draw(){
     }
     glEnd();
     
-    ofDrawBitmapString("Number of gestures: " +ofToString(dollar.gestures.size()), 10, ofGetHeight()-25);
-    ofDrawBitmapString("Name of current gesture: " +gesture->name, 10, ofGetHeight()-10);
+//    ofDrawBitmapString("Number of gestures: " +ofToString(dollar.gestures.size()), 10, ofGetHeight()-25);
+//    ofDrawBitmapString("Name of current gesture: " +gesture->name, 10, ofGetHeight()-10);
     
 }
 
@@ -232,6 +232,7 @@ void ofApp::loadFromFile() {
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
+    ofLog() << key;
     if (key == 116 || key == 102) { // 116 is t for train, 102 is f for find
         ofVec3f fingertip = hand.detections[0][HAND_INDEX3];
         if(mode == 0 && fingertip.z > 0.7) { // z is confidence
@@ -241,7 +242,16 @@ void ofApp::keyPressed(int key){
     }
     
     if (key == 114) { // r for reset
-        
+        particles.clear();
+        line.clear();
+    }
+    
+    if (key == 108) { //l for load from file
+        this->loadFromFile();
+    }
+    
+    if (key == 115) { //s for save to file
+        this->saveToFile();
     }
     
     if (key == 99) { // c for color
